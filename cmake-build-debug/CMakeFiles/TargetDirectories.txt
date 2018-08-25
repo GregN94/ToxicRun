@@ -1,0 +1,3 @@
+/home/grzegorz/Projects/ToxicRun/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/grzegorz/Projects/ToxicRun/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/grzegorz/Projects/ToxicRun/cmake-build-debug/CMakeFiles/ToxicRun.dir
