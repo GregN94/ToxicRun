@@ -1,5 +1,6 @@
 #ifndef GAMEOBJECT_HPP
 #define GAMEOBJECT_HPP
+
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 
@@ -15,26 +16,14 @@ class GameObject : public IGameObject
 {
 public:
     float SCALE = 30.f;
-    GameObject(b2World& world, float x, float y, sf::Texture& texture, float scale, b2BodyType type);
+    GameObject(b2World& world, float positionX, float positionY, sf::Texture& texture, float scale, b2BodyType type);
     void setPosition(float x, float y) override;
     void update() override;
     sf::Sprite getBody() override;
 
     sf::Sprite graphicBody;
     b2Body* physicalBody;
-    b2PolygonShape Shape;
-};
-
-class GameObjects
-{
-public:
-    GameObjects() {objectList.reserve(40);}
-    void update();
-    void add(GameObject);
-    void draw(sf::RenderWindow&);
-
-    std::vector<std::shared_ptr<IGameObject>> objectList;
-    void add(std::shared_ptr<IGameObject> object_ptr);
+    b2PolygonShape shape;
 };
 
 #endif // GAMEOBJECT_HPP

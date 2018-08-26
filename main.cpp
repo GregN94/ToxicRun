@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 #include "GameObject.hpp"
+#include "GameObjects.hpp"
 #include "Player.hpp"
 #include <iostream>
 
@@ -8,25 +9,31 @@ int main()
 {
     int SCREEN_WIDTH = 800;
     int SCREEN_HEIGHT = 600;
-    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "Test");
-    b2Vec2 gravity(0.f, 9.8f);
+    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "ToxicRun");
+    b2Vec2 gravity(0.f, 9.8f / 20);
     b2World world(gravity);
 
     sf::Texture groundTexture;
-    sf::Texture playertexture;
-    groundTexture.loadFromFile("/home/grzegorz/Projects/ToxicRun/res/ground.png");
-    playertexture.loadFromFile("/home/grzegorz/Projects/ToxicRun/res/human.png");
+    sf::Texture playerTexture;
+    sf::Texture  wallTexture;
 
-    sf::Sprite sprite;
-    sprite.setTexture(groundTexture);
-    sprite.setTextureRect(sf::IntRect(10, 10, 32, 32));
-    sprite.setPosition(sf::Vector2f(10, 50));
+    groundTexture.loadFromFile("/home/grzegorz/Projects/ToxicRun/res/ground.png");
+    playerTexture.loadFromFile("/home/grzegorz/Projects/ToxicRun/res/human.png");
+    wallTexture.loadFromFile("/home/grzegorz/Projects/ToxicRun/res/brick.png");
+
     GameObjects gameObjects;
-    GameObject ground(world, SCREEN_WIDTH / 2, SCREEN_HEIGHT + groundTexture.getSize().y / 2 - 20, groundTexture, 1, b2_staticBody);
+
+    GameObject ground(world, SCREEN_WIDTH / 2, SCREEN_HEIGHT - groundTexture.getSize().y / 2, groundTexture, 1, b2_staticBody);
     gameObjects.add(ground);
 
-    std::shared_ptr<Player>  player = std::make_shared<Player>(world, 200, 100, playertexture);
+    GameObject platform(world, SCREEN_WIDTH / 2, 500, groundTexture, 0.1, b2_staticBody);
+    gameObjects.add(platform);
+
+    GameObject wall(world, wallTexture.getSize().x / 2, 100 + SCREEN_HEIGHT / 2, wallTexture, 0.5, b2_staticBody);
+    gameObjects.add(wall);
+    std::shared_ptr<Player>  player = std::make_shared<Player>(world, 200, 100 - 50, playerTexture);
     gameObjects.add(player);
+
 
     while (window.isOpen())
     {
@@ -50,19 +57,14 @@ int main()
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            if (player->graphicBody.getPosition().y + player->graphicBody.getTextureRect().height * 0.05  + 1> ground.graphicBody.getPosition().y - ground.graphicBody.getTextureRect().height / 2)
-            {
+
+                std::cout << "jump" << std::endl;
                 player->jump();
-//                std::cout << "collide" << std::endl;
-            }
+
         }
-//        std::cout << "Player Bottom: " <<player->graphicBody.getPosition().y + player->graphicBody.getTextureRect().height *0.05 <<std::endl;
-//         std::cout << "Bottom: " <<ground.graphicBody.getPosition().y - ground.graphicBody.getTextureRect().height / 2 <<std::endl;
 
 
-        window.draw(sprite);
-//        sprite.move(sf::Vector2f(-20, 0));
-//        window.draw(sprite);
+
         gameObjects.update();
         gameObjects.draw(window);
         window.display();

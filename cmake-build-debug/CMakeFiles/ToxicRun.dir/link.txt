@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/ToxicRun.dir/src/GameObject.cpp.o CMakeFiles/ToxicRun.dir/src/Player.cpp.o CMakeFiles/ToxicRun.dir/main.cpp.o  -o ToxicRun /usr/lib/x86_64-linux-gnu/libsfml-system.so /usr/lib/x86_64-linux-gnu/libsfml-window.so /usr/lib/x86_64-linux-gnu/libsfml-graphics.so /usr/lib/x86_64-linux-gnu/libBox2D.so 
