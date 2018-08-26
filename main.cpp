@@ -41,7 +41,6 @@ int main()
         sf::Event event;
         while (window.pollEvent(event))
         {
-            // Request for closing the window
             if (event.type == sf::Event::Closed)
                 window.close();
         }
@@ -62,8 +61,6 @@ int main()
                 player->jump();
 
         }
-
-
 
         gameObjects.update();
         gameObjects.draw(window);
