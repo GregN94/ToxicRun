@@ -31,7 +31,7 @@ int main()
 
     GameObject wall(world, wallTexture.getSize().x / 2, 100 + SCREEN_HEIGHT / 2, wallTexture, 0.5, b2_staticBody);
     gameObjects.add(wall);
-    std::shared_ptr<Player>  player = std::make_shared<Player>(world, 200, 100 - 50, playerTexture);
+    std::shared_ptr<Player>  player = std::make_shared<Player>(world, 200, SCREEN_HEIGHT - groundTexture.getSize().y, playerTexture);
     gameObjects.add(player);
 
 
