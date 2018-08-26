@@ -23,14 +23,22 @@ int main()
 
     GameObjects gameObjects;
 
+    GameObject wall(world, wallTexture.getSize().x / 4, SCREEN_HEIGHT - wallTexture.getSize().y / 4, wallTexture, 0.5, b2_staticBody);
+    gameObjects.add(wall);
+    GameObject wall2(world, wallTexture.getSize().x / 4, SCREEN_HEIGHT - 3 * wallTexture.getSize().y / 4, wallTexture, 0.5, b2_staticBody);
+    gameObjects.add(wall2);
+    GameObject wall3(world, SCREEN_WIDTH - wallTexture.getSize().x / 4, SCREEN_HEIGHT - wallTexture.getSize().y / 4, wallTexture, 0.5, b2_staticBody);
+    gameObjects.add(wall3);
+    GameObject wall4(world, SCREEN_WIDTH - wallTexture.getSize().x / 4, SCREEN_HEIGHT - 3 * wallTexture.getSize().y / 4, wallTexture, 0.5, b2_staticBody);
+    gameObjects.add(wall4);
+
     GameObject ground(world, SCREEN_WIDTH / 2, SCREEN_HEIGHT - groundTexture.getSize().y / 2, groundTexture, 1, b2_staticBody);
     gameObjects.add(ground);
 
     GameObject platform(world, SCREEN_WIDTH / 2, 500, groundTexture, 0.1, b2_staticBody);
     gameObjects.add(platform);
 
-    GameObject wall(world, wallTexture.getSize().x / 2, 100 + SCREEN_HEIGHT / 2, wallTexture, 0.5, b2_staticBody);
-    gameObjects.add(wall);
+
     std::shared_ptr<Player>  player = std::make_shared<Player>(world, 200, SCREEN_HEIGHT - groundTexture.getSize().y, playerTexture);
     gameObjects.add(player);
 
