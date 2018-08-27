@@ -1,8 +1,12 @@
 #include "Player.hpp"
 #include <iostream>
 
-Player::Player(b2World& world, float x, float y, sf::Texture& texture)
-    : GameObject(world, x, y, texture, 0.1, b2_dynamicBody)
+#define MAX_SPEED   1.5
+#define FORCE       10
+#define TORQUE      100
+
+Player::Player(b2World& world, float x, float y, sf::Texture& texture, float scale)
+    : GameObject(world, x, y, texture, scale, b2_dynamicBody)
 {
     b2MassData mass{18, physicalBody->GetLocalCenter(), physicalBody->GetInertia()};
     physicalBody->SetMassData(&mass);
@@ -12,28 +16,29 @@ Player::Player(b2World& world, float x, float y, sf::Texture& texture)
 
 void Player::moveLeft()
 {
-    if (physicalBody->GetLinearVelocity().x > -maxSpeed)
-        physicalBody->ApplyForce(b2Vec2(-force, 0), physicalBody->GetWorldCenter(), true);
+    if (physicalBody->GetLinearVelocity().x > -MAX_SPEED)
+        physicalBody->ApplyForce(b2Vec2(-FORCE, 0), physicalBody->GetWorldCenter(), true);
 }
 
 void Player::moveRight()
 {
-    if (physicalBody->GetLinearVelocity().x < maxSpeed)
-        physicalBody->ApplyForce(b2Vec2(force, 0), physicalBody->GetWorldCenter(), true);
+    if (physicalBody->GetLinearVelocity().x < MAX_SPEED)
+        physicalBody->ApplyForce(b2Vec2(FORCE, 0), physicalBody->GetWorldCenter(), true);
 }
 
 void Player::jump()
 {
     float impulse = -physicalBody->GetMass() * 0.165 / 15;
-        physicalBody->ApplyLinearImpulse(b2Vec2(0,impulse), physicalBody->GetWorldCenter(), true );
+    physicalBody->ApplyLinearImpulse(b2Vec2(0,impulse), physicalBody->GetWorldCenter(), true );
+    std::cout << "jump" << std::endl;
 }
 
 void Player::update()
 {
-    if (physicalBody->GetAngle() > 3.14 / 6)
-        physicalBody->ApplyTorque(-55, true);
-    if (physicalBody->GetAngle() < -3.14 / 6)
-        physicalBody->ApplyTorque(55, true);
+    if (physicalBody->GetAngle() > b2_pi / 6)
+        physicalBody->ApplyTorque(-TORQUE, true);
+    if (physicalBody->GetAngle() < -b2_pi / 6)
+        physicalBody->ApplyTorque(TORQUE, true);
 
     GameObject::update();
 }

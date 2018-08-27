@@ -15,8 +15,12 @@ public:
 class GameObject : public IGameObject
 {
 public:
-    float SCALE = 30.f;
-    GameObject(b2World& world, float positionX, float positionY, sf::Texture& texture, float scale, b2BodyType type);
+    GameObject(b2World& world,
+               float positionX,
+               float positionY,
+               sf::Texture& texture,
+               float scale,
+               b2BodyType type);
     void setPosition(float x, float y) override;
     void update() override;
     sf::Sprite getBody() override;
