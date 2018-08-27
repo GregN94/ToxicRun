@@ -9,7 +9,8 @@ int main()
 {
     int SCREEN_WIDTH = 1920;
     int SCREEN_HEIGHT = 1080;
-    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "ToxicRun", sf::Style::Fullscreen);
+//    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "ToxicRun", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "ToxicRun");
     b2Vec2 gravity(0.f, 9.8f / 20);
     b2World world(gravity);
 
@@ -97,6 +98,7 @@ int main()
             player->jump();
         }
 
+        std::cout <<"speed: " << player->physicalBody->GetLinearVelocity().y << std::endl;
         gameObjects.update();
         gameObjects.draw(window);
         window.display();

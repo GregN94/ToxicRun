@@ -28,9 +28,10 @@ void Player::moveRight()
 
 void Player::jump()
 {
-    float impulse = -physicalBody->GetMass() * 0.165 / 15;
-    physicalBody->ApplyLinearImpulse(b2Vec2(0,impulse), physicalBody->GetWorldCenter(), true );
-    std::cout << "jump" << std::endl;
+
+    float impulse = -physicalBody->GetMass() * 5;
+    physicalBody->ApplyLinearImpulse(b2Vec2(0, impulse), physicalBody->GetWorldCenter(), true);
+//    std::cout << "jump" << std::endl;
 }
 
 void Player::update()

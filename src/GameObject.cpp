@@ -24,11 +24,12 @@ GameObject::GameObject(b2World& world,
     shape.SetAsBox(graphicBody.getTextureRect().width  * scale / (2 * BOX2D_SCALE),
                    graphicBody.getTextureRect().height * scale / (2 * BOX2D_SCALE));
 
-    b2FixtureDef FixtureDef;
-    FixtureDef.density = DENSITY;
-    FixtureDef.friction = FRICTION;
-    FixtureDef.shape = &shape;
-    physicalBody->CreateFixture(&FixtureDef);
+    b2FixtureDef fixtureDef;
+    fixtureDef.density = DENSITY;
+    fixtureDef.friction = FRICTION;
+    fixtureDef.shape = &shape;
+    physicalBody->CreateFixture(&fixtureDef);
+    physicalBody->CreateFixture(&fixtureDef);
 
     graphicBody.setRotation(physicalBody->GetAngle() * 180 / b2_pi);
     physicalBody->SetSleepingAllowed(true);
