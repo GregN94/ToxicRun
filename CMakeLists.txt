@@ -16,7 +16,8 @@ set(SOURCES
         ${SCR}/GameObject.cpp
         ${SCR}/Player.cpp
         main.cpp
-        ${SCR}/GameObjects.cpp)
+        ${SCR}/GameObjects.cpp
+        ${SCR}/MyContactListener.cpp)
 
 find_package(SFML REQUIRED COMPONENTS System Window Graphics)
 find_package(Box2D REQUIRED)

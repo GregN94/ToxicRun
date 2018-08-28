@@ -1,8 +1,12 @@
-#ifndef GAMEOBJECT_HPP
-#define GAMEOBJECT_HPP
+#ifndef GAME_OBJECT_HPP
+#define GAME_OBJECT_HPP
 
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
+
+#define DENSITY         1
+#define FRICTION        0.5
+#define BOX2D_SCALE     30
 
 class IGameObject
 {
@@ -27,7 +31,6 @@ public:
 
     sf::Sprite graphicBody;
     b2Body* physicalBody;
-    b2PolygonShape shape;
 };
 
-#endif // GAMEOBJECT_HPP
+#endif // GAME_OBJECT_HPP

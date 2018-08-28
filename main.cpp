@@ -1,18 +1,25 @@
-#include <SFML/Graphics.hpp>
-#include <Box2D/Box2D.h>
 #include "GameObject.hpp"
 #include "GameObjects.hpp"
 #include "Player.hpp"
+#include "MyContactListener.hpp"
+
+#include <SFML/Graphics.hpp>
+#include <Box2D/Box2D.h>
 #include <iostream>
 
 int main()
 {
-    int SCREEN_WIDTH = 1920;
-    int SCREEN_HEIGHT = 1080;
-//    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "ToxicRun", sf::Style::Fullscreen);
-    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "ToxicRun");
+    unsigned int SCREEN_WIDTH = 1920;
+    unsigned int SCREEN_HEIGHT = 1080;
+    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "ToxicRun", sf::Style::Fullscreen);
+//    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "ToxicRun");
     b2Vec2 gravity(0.f, 9.8f / 20);
     b2World world(gravity);
+    bool canIJump = true;
+    MyContactListener myContactListenerInstance(&canIJump);
+
+    //in FooTest constructor
+    world.SetContactListener(&myContactListenerInstance);
 
     sf::Texture groundTexture;
     sf::Texture playerTexture;
@@ -25,15 +32,15 @@ int main()
     GameObjects gameObjects;
 
     GameObject wall(world,
-                    wallTexture.getSize().x / 4,
-                    SCREEN_HEIGHT - wallTexture.getSize().y / 4,
+                    (float) wallTexture.getSize().x / 4,
+                    SCREEN_HEIGHT - (float) wallTexture.getSize().y / 4,
                     wallTexture,
                     0.5,
                     b2_staticBody);
     gameObjects.add(wall);
     GameObject wall2(world,
-                     wallTexture.getSize().x / 4,
-                     SCREEN_HEIGHT - 3 * wallTexture.getSize().y / 4,
+                     (float) wallTexture.getSize().x / 4,
+                     SCREEN_HEIGHT - 3 * (float) wallTexture.getSize().y / 4,
                      wallTexture,
                      0.5,
                      b2_staticBody);
@@ -63,9 +70,9 @@ int main()
 
     GameObject platform(world,
                         SCREEN_WIDTH / 2,
-                        500,
+                        SCREEN_HEIGHT - 200,
                         groundTexture,
-                        0.1,
+                        0.5,
                         b2_staticBody);
     gameObjects.add(platform);
 
@@ -95,10 +102,10 @@ int main()
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            player->jump();
+            if ( canIJump )
+                player->jump();
         }
 
-        std::cout <<"speed: " << player->physicalBody->GetLinearVelocity().y << std::endl;
         gameObjects.update();
         gameObjects.draw(window);
         window.display();

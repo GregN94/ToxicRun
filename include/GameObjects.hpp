@@ -1,9 +1,5 @@
-//
-// Created by grzegorz on 26.08.18.
-//
-
-#ifndef TOXICRUN_GAMEOBJECTS_H
-#define TOXICRUN_GAMEOBJECTS_H
+#ifndef GAME_OBJECTS_H
+#define GAME_OBJECTS_H
 
 #include "GameObject.hpp"
 #include <SFML/Graphics.hpp>
@@ -20,4 +16,4 @@ public:
     void add(std::shared_ptr<IGameObject> object_ptr);
 };
 
-#endif //TOXICRUN_GAMEOBJECTS_H
+#endif GAME_OBJECTS_H

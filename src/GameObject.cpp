@@ -1,9 +1,5 @@
 #include "GameObject.hpp"
 
-#define DENSITY         1
-#define FRICTION        0.5
-#define BOX2D_SCALE     30
-
 GameObject::GameObject(b2World& world,
                        float positionX,
                        float positionY,
@@ -12,8 +8,8 @@ GameObject::GameObject(b2World& world,
                        b2BodyType type)
 {
     graphicBody.setTexture(texture);
-    graphicBody.setOrigin(graphicBody.getTextureRect().width / 2,
-                          graphicBody.getTextureRect().height / 2);
+    graphicBody.setOrigin( (float) graphicBody.getTextureRect().width / 2,
+                           (float) graphicBody.getTextureRect().height / 2);
 
     graphicBody.setPosition(positionX, positionY);
     graphicBody.setScale(scale, scale);
@@ -21,6 +17,7 @@ GameObject::GameObject(b2World& world,
     body.position = b2Vec2(positionX / BOX2D_SCALE, positionY / BOX2D_SCALE);
     body.type = type;
     physicalBody = world.CreateBody(&body);
+    b2PolygonShape shape;
     shape.SetAsBox(graphicBody.getTextureRect().width  * scale / (2 * BOX2D_SCALE),
                    graphicBody.getTextureRect().height * scale / (2 * BOX2D_SCALE));
 
@@ -29,7 +26,7 @@ GameObject::GameObject(b2World& world,
     fixtureDef.friction = FRICTION;
     fixtureDef.shape = &shape;
     physicalBody->CreateFixture(&fixtureDef);
-    physicalBody->CreateFixture(&fixtureDef);
+    physicalBody->SetUserData( (void*)1 );
 
     graphicBody.setRotation(physicalBody->GetAngle() * 180 / b2_pi);
     physicalBody->SetSleepingAllowed(true);
@@ -37,8 +34,8 @@ GameObject::GameObject(b2World& world,
 
 void GameObject::setPosition(float x, float y)
 {
-    b2Vec2 vect = b2Vec2(x / 30, y / 30);
-    physicalBody->SetTransform(vect, 0);
+    b2Vec2 vec = b2Vec2(x / 30, y / 30);
+    physicalBody->SetTransform(vec, 0);
     graphicBody.setPosition(x, y);
 }
 

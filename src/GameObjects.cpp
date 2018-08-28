@@ -1,19 +1,15 @@
-//
-// Created by grzegorz on 26.08.18.
-//
-
 #include "GameObjects.hpp"
 
 void GameObjects::update()
 {
-    for (auto object : objectList) {
+    for (const auto object : objectList) {
         object->update();
     }
 }
 
 void GameObjects::draw(sf::RenderWindow& window)
 {
-    for (auto object : objectList) {
+    for (const auto object : objectList) {
         window.draw(object->getBody());
     }
 }
