@@ -14,6 +14,9 @@ public:
 
 private:
     void animate();
+    void animateRun();
+    void animateLeft();
+    void animateRight();
     int drawingIndex = 0;
     sf::Clock clock;
     float playerScale;

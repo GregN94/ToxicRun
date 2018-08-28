@@ -66,22 +66,12 @@ Player::Player(b2World& world, float positionX, float positionY, sf::Texture& te
 
 void Player::moveLeft()
 {
-    if (clock.getElapsedTime().asSeconds() > 0.1f){
-        animate();
-        clock.restart();
-    }
-    graphicBody.setScale({-playerScale, playerScale});
     if (physicalBody->GetLinearVelocity().x > -MAX_SPEED)
         physicalBody->ApplyForce(b2Vec2(-FORCE, 0), physicalBody->GetWorldCenter(), true);
 }
 
 void Player::moveRight()
 {
-    if (clock.getElapsedTime().asSeconds() > 0.1f){
-        animate();
-        clock.restart();
-    }
-    graphicBody.setScale({playerScale, playerScale});
     if (physicalBody->GetLinearVelocity().x < MAX_SPEED)
         physicalBody->ApplyForce(b2Vec2(FORCE, 0), physicalBody->GetWorldCenter(), true);
 }
@@ -100,9 +90,39 @@ void Player::update()
         physicalBody->ApplyTorque(TORQUE, true);
 
     GameObject::update();
+    if (clock.getElapsedTime().asSeconds() > 0.1f){
+        animate();
+        clock.restart();
+    }
 }
 
 void Player::animate()
+{
+    if (physicalBody->GetLinearVelocity().x > 0.1)
+    {
+        animateRight();
+    }
+    else if (physicalBody->GetLinearVelocity().x < -0.1)
+    {
+        animateLeft();
+    }
+    else if (drawingIndex != 7 and drawingIndex != 3)
+        animateRun();
+}
+
+void Player::animateLeft()
+{
+    animateRun();
+    graphicBody.setScale({-playerScale, playerScale});
+}
+
+void Player::animateRight()
+{
+    animateRun();
+    graphicBody.setScale({playerScale, playerScale});
+}
+
+void Player::animateRun()
 {
     drawingIndex++;
     if (drawingIndex == 8) drawingIndex = 1;
