@@ -26,7 +26,8 @@ int main()
     sf::Texture  wallTexture;
 
     groundTexture.loadFromFile("../res/ground.png");
-    playerTexture.loadFromFile("../res/human.png");
+    playerTexture.loadFromFile("../res/runner.png");
+//    playerTexture.loadFromFile("../res/human.png");
     wallTexture.loadFromFile("../res/brick.png");
 
     GameObjects gameObjects;

@@ -11,6 +11,12 @@ public:
     void moveLeft();
     void moveRight();
     void jump();
+
+private:
+    void animate();
+    int drawingIndex = 0;
+    sf::Clock clock;
+    float playerScale;
 };
 
 #endif // PLAYER_HPP

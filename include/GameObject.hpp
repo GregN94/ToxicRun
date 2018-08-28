@@ -25,6 +25,7 @@ public:
                sf::Texture& texture,
                float scale,
                b2BodyType type);
+    GameObject(){};
     void setPosition(float x, float y) override;
     void update() override;
     sf::Sprite getBody() override;
