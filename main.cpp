@@ -12,8 +12,8 @@ int main()
     unsigned int SCREEN_WIDTH = 1920;
     unsigned int SCREEN_HEIGHT = 1080;
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "ToxicRun", sf::Style::Fullscreen);
-//    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "ToxicRun");
-    b2Vec2 gravity(0.f, 9.8f / 20);
+
+    b2Vec2 gravity(0.f, 9.8f / 10);
     b2World world(gravity);
     bool canIJump = true;
     MyContactListener myContactListenerInstance(&canIJump);
@@ -24,58 +24,61 @@ int main()
     sf::Texture groundTexture;
     sf::Texture playerTexture;
     sf::Texture  wallTexture;
+    sf::Texture  platformTexture;
+    sf::Texture backgroundTexture;
 
     groundTexture.loadFromFile("../res/ground.png");
-    playerTexture.loadFromFile("../res/runner.png");
-//    playerTexture.loadFromFile("../res/human.png");
-    wallTexture.loadFromFile("../res/brick.png");
+    playerTexture.loadFromFile("../res/runner2.png");
+    wallTexture.loadFromFile("../res/wall.png");
+    platformTexture.loadFromFile("../res/platform.png");
+    backgroundTexture.loadFromFile("../res/background.png");
+    sf::Sprite background(backgroundTexture);
 
     GameObjects gameObjects;
 
-    GameObject wall(world,
-                    (float) wallTexture.getSize().x / 4,
-                    SCREEN_HEIGHT - (float) wallTexture.getSize().y / 4,
-                    wallTexture,
-                    0.5,
-                    b2_staticBody);
-    gameObjects.add(wall);
-    GameObject wall2(world,
-                     (float) wallTexture.getSize().x / 4,
-                     SCREEN_HEIGHT - 3 * (float) wallTexture.getSize().y / 4,
-                     wallTexture,
-                     0.5,
-                     b2_staticBody);
-    gameObjects.add(wall2);
-    GameObject wall3(world,
-                     SCREEN_WIDTH - wallTexture.getSize().x / 4,
-                     SCREEN_HEIGHT - wallTexture.getSize().y / 4,
-                     wallTexture,
-                     0.5,
-                     b2_staticBody);
-    gameObjects.add(wall3);
-    GameObject wall4(world,
-                     SCREEN_WIDTH - wallTexture.getSize().x / 4,
-                     SCREEN_HEIGHT - 3 * wallTexture.getSize().y / 4,
-                     wallTexture,
-                     0.5,
-                     b2_staticBody);
-    gameObjects.add(wall4);
 
     GameObject ground(world,
                       SCREEN_WIDTH / 2,
                       SCREEN_HEIGHT - groundTexture.getSize().y / 2,
                       groundTexture,
-                      2,
+                      1,
                       b2_staticBody);
     gameObjects.add(ground);
+    
+    GameObject wall(world,
+                    (float) wallTexture.getSize().x / 2,
+                    SCREEN_HEIGHT - (float) wallTexture.getSize().y / 2,
+                    wallTexture,
+                    1,
+                    b2_staticBody,
+                    0);
+    gameObjects.add(wall);
+    GameObject wall3(world,
+                     SCREEN_WIDTH - wallTexture.getSize().x / 2,
+                     SCREEN_HEIGHT - wallTexture.getSize().y / 2,
+                     wallTexture,
+                     1,
+                     b2_staticBody,
+                     0);
+    gameObjects.add(wall3);
+
+
 
     GameObject platform(world,
                         SCREEN_WIDTH / 2,
                         SCREEN_HEIGHT - 200,
-                        groundTexture,
+                        platformTexture,
                         0.5,
                         b2_staticBody);
     gameObjects.add(platform);
+
+    GameObject platform2(world,
+                        SCREEN_WIDTH / 2 + 100,
+                        SCREEN_HEIGHT / 2 + 200,
+                        platformTexture,
+                        0.5,
+                        b2_staticBody);
+    gameObjects.add(platform2);
 
 
     std::shared_ptr<Player>  player = std::make_shared<Player>(world, SCREEN_WIDTH / 2, SCREEN_HEIGHT - groundTexture.getSize().y, playerTexture);
@@ -84,6 +87,7 @@ int main()
 
     while (window.isOpen())
     {
+
 
         sf::Event event;
         while (window.pollEvent(event))
@@ -107,6 +111,7 @@ int main()
                 player->jump();
         }
 
+        window.draw(background);
         gameObjects.update();
         gameObjects.draw(window);
         window.display();

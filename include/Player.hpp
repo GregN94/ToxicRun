@@ -6,7 +6,7 @@
 class Player : public GameObject
 {
 public:
-    Player(b2World& world, float x, float y, sf::Texture& texture, float scale = 0.2);
+    Player(b2World& world, float x, float y, sf::Texture& texture, float scale = 0.3);
     void update() override;
     void moveLeft();
     void moveRight();
@@ -17,7 +17,7 @@ private:
     void animateRun();
     void animateLeft();
     void animateRight();
-    int drawingIndex = 0;
+    int drawingIndex = 3;
     sf::Clock clock;
     float playerScale;
 };

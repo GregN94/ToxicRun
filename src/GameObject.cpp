@@ -5,7 +5,8 @@ GameObject::GameObject(b2World& world,
                        float positionY,
                        sf::Texture& texture,
                        float scale,
-                       b2BodyType type)
+                       b2BodyType type,
+                       float friction)
 {
     graphicBody.setTexture(texture);
     graphicBody.setOrigin( (float) graphicBody.getTextureRect().width / 2,
@@ -23,7 +24,7 @@ GameObject::GameObject(b2World& world,
 
     b2FixtureDef fixtureDef;
     fixtureDef.density = DENSITY;
-    fixtureDef.friction = FRICTION;
+    fixtureDef.friction = friction;
     fixtureDef.shape = &shape;
     physicalBody->CreateFixture(&fixtureDef);
     physicalBody->SetUserData( (void*)1 );

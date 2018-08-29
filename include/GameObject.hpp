@@ -24,7 +24,8 @@ public:
                float positionY,
                sf::Texture& texture,
                float scale,
-               b2BodyType type);
+               b2BodyType type,
+               float friction = FRICTION);
     GameObject(){};
     void setPosition(float x, float y) override;
     void update() override;

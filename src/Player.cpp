@@ -1,9 +1,8 @@
 #include "Player.hpp"
 #include <iostream>
 
-#define MAX_SPEED   1.5
-#define FORCE       10
-#define TORQUE      200
+#define MAX_SPEED   2
+#define FORCE       20
 
 std::vector<sf::IntRect> drawings = {sf::IntRect(0,    0,   480,  440),
                                      sf::IntRect(480,  0,   480,  440),
@@ -24,13 +23,15 @@ Player::Player(b2World& world, float positionX, float positionY, sf::Texture& te
 
     graphicBody.setPosition(positionX, positionY);
     graphicBody.setScale(playerScale, playerScale);
+
+
     b2BodyDef body;
     body.position = b2Vec2(positionX / BOX2D_SCALE, positionY / BOX2D_SCALE);
     body.type = b2_dynamicBody;
     physicalBody = world.CreateBody(&body);
     b2PolygonShape shape;
-    shape.SetAsBox(graphicBody.getTextureRect().width  * playerScale / (2 * BOX2D_SCALE),
-                   graphicBody.getTextureRect().height * playerScale / (2 * BOX2D_SCALE));
+    shape.SetAsBox(graphicBody.getTextureRect().width  * 0.3 * playerScale  / (2 * BOX2D_SCALE),
+                   graphicBody.getTextureRect().height * 0.75 *playerScale  / (2 * BOX2D_SCALE));
 
     b2FixtureDef fixtureDef;
     fixtureDef.density = DENSITY;
@@ -43,7 +44,7 @@ Player::Player(b2World& world, float positionX, float positionY, sf::Texture& te
     physicalBody->SetSleepingAllowed(true);
 
     b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(0.3, 0.3, b2Vec2(0, graphicBody.getTextureRect().height * playerScale / (2 * BOX2D_SCALE)), 0);
+    polygonShape.SetAsBox(0.3, 0.3, b2Vec2(0, graphicBody.getTextureRect().height *0.75* playerScale / (2 * BOX2D_SCALE)), 0);
 
     //fixture definition
     b2FixtureDef myFixtureDef;
@@ -62,6 +63,8 @@ Player::Player(b2World& world, float positionX, float positionY, sf::Texture& te
     physicalBody->SetAngularDamping(2);
     physicalBody->SetSleepingAllowed(false);
 
+    physicalBody->SetFixedRotation(true);
+
 }
 
 void Player::moveLeft()
@@ -78,17 +81,12 @@ void Player::moveRight()
 
 void Player::jump()
 {
-    float impulse = -physicalBody->GetMass() * 5 / 20;
+    float impulse = -physicalBody->GetMass() * 5 / 15;
     physicalBody->ApplyLinearImpulse(b2Vec2(0, impulse), physicalBody->GetWorldCenter(), true);
 }
 
 void Player::update()
 {
-    if (physicalBody->GetAngle() > b2_pi / 6)
-        physicalBody->ApplyTorque(-TORQUE, true);
-    if (physicalBody->GetAngle() < -b2_pi / 6)
-        physicalBody->ApplyTorque(TORQUE, true);
-
     GameObject::update();
     if (clock.getElapsedTime().asSeconds() > 0.1f){
         animate();
@@ -107,7 +105,10 @@ void Player::animate()
         animateLeft();
     }
     else if (drawingIndex != 7 and drawingIndex != 3)
-        animateRun();
+    {
+        drawingIndex = 3;
+        graphicBody.setTextureRect(drawings.at(drawingIndex));
+    }
 }
 
 void Player::animateLeft()
