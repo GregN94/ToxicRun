@@ -1,8 +1,10 @@
 #include "Player.hpp"
 #include <iostream>
 
-#define MAX_SPEED   2
-#define FORCE       20
+#define MAX_SPEED   4
+#define FORCE       1000
+#define AIR_FORCE   60
+
 
 std::vector<sf::IntRect> drawings = {sf::IntRect(0,    0,   480,  440),
                                      sf::IntRect(480,  0,   480,  440),
@@ -65,24 +67,44 @@ Player::Player(b2World& world, float positionX, float positionY, sf::Texture& te
 
     physicalBody->SetFixedRotation(true);
 
+
+    testLight = new ltbl::Light();
+    testLight->center = Vec2f(200.0f, 200.0f);
+    testLight->radius = 300.0f;
+    testLight->size = 20.0f;
+    testLight->softSpreadAngle = 0.0f;
+    testLight->calculateAABB();
 }
 
 void Player::moveLeft()
 {
-    if (physicalBody->GetLinearVelocity().x > -MAX_SPEED)
-        physicalBody->ApplyForce(b2Vec2(-FORCE, 0), physicalBody->GetWorldCenter(), true);
+    if ( canIJump )
+        move(physicalBody->GetLinearVelocity().x > -MAX_SPEED, -FORCE);
+    else
+        move(physicalBody->GetLinearVelocity().x > -MAX_SPEED, -AIR_FORCE);
 }
 
 void Player::moveRight()
 {
-    if (physicalBody->GetLinearVelocity().x < MAX_SPEED)
-        physicalBody->ApplyForce(b2Vec2(FORCE, 0), physicalBody->GetWorldCenter(), true);
+    if ( canIJump )
+        move(physicalBody->GetLinearVelocity().x < MAX_SPEED, FORCE);
+    else
+        move(physicalBody->GetLinearVelocity().x < MAX_SPEED, AIR_FORCE);
+}
+
+void Player::move(bool predicate, float force)
+{
+    if (predicate)
+        physicalBody->ApplyForce(b2Vec2(force, 0), physicalBody->GetWorldCenter(), true);
 }
 
 void Player::jump()
 {
-    float impulse = -physicalBody->GetMass() * 5 / 15;
-    physicalBody->ApplyLinearImpulse(b2Vec2(0, impulse), physicalBody->GetWorldCenter(), true);
+    if ( canIJump )
+    {
+        float impulse = -physicalBody->GetMass() * 2.7;
+        physicalBody->ApplyLinearImpulse(b2Vec2(0, impulse), physicalBody->GetWorldCenter(), true);
+    }
 }
 
 void Player::update()
@@ -92,6 +114,9 @@ void Player::update()
         animate();
         clock.restart();
     }
+    testLight->center.x = graphicBody.getPosition().x;
+    testLight->center.y = 1080 - graphicBody.getPosition().y;
+    testLight->updateTreeStatus();
 }
 
 void Player::animate()

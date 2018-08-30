@@ -12,14 +12,19 @@ public:
     void moveRight();
     void jump();
 
+    ltbl::Light* testLight;
+    bool canIJump = true;
+
 private:
     void animate();
     void animateRun();
     void animateLeft();
     void animateRight();
+    void move(bool predicate, float force);
     int drawingIndex = 3;
     sf::Clock clock;
     float playerScale;
+
 };
 
 #endif // PLAYER_HPP
