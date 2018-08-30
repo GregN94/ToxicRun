@@ -31,6 +31,36 @@ GameObject::GameObject(b2World& world,
 
     graphicBody.setRotation(physicalBody->GetAngle() * 180 / b2_pi);
     physicalBody->SetSleepingAllowed(true);
+
+    testHull = new ltbl::ConvexHull();
+    ltbl::ConvexHullVertex newVertex;
+
+
+
+    newVertex.position.x = static_cast<float>(-graphicBody.getTextureRect().width * scale / 2);
+    newVertex.position.y = static_cast<float>(graphicBody.getTextureRect().height * scale / 2);
+    testHull->vertices.push_back(newVertex);
+
+    newVertex.position.x = static_cast<float>(-graphicBody.getTextureRect().width * scale / 2);
+    newVertex.position.y = static_cast<float>(-graphicBody.getTextureRect().height* scale  / 2);
+    testHull->vertices.push_back(newVertex);
+
+    newVertex.position.x = static_cast<float>(graphicBody.getTextureRect().width * scale / 2);
+    newVertex.position.y = static_cast<float>(-graphicBody.getTextureRect().height * scale / 2);
+    testHull->vertices.push_back(newVertex);
+
+
+
+    newVertex.position.x = static_cast<float>(graphicBody.getTextureRect().width * scale / 2);
+    newVertex.position.y = static_cast<float>(graphicBody.getTextureRect().height * scale / 2);
+    testHull->vertices.push_back(newVertex);
+
+
+
+    testHull->centerHull();
+    testHull->calculateNormals();
+    testHull->generateAABB();
+    testHull->setWorldCenter(Vec2f(0, 0));
 }
 
 void GameObject::setPosition(float x, float y)

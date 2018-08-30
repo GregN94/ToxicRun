@@ -70,7 +70,7 @@ Player::Player(b2World& world, float positionX, float positionY, sf::Texture& te
 
     testLight = new ltbl::Light();
     testLight->center = Vec2f(200.0f, 200.0f);
-    testLight->radius = 300.0f;
+    testLight->radius = 700.0f;
     testLight->size = 20.0f;
     testLight->softSpreadAngle = 0.0f;
     testLight->calculateAABB();

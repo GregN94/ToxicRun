@@ -35,6 +35,7 @@ public:
 
     sf::Sprite graphicBody;
     b2Body* physicalBody;
+    ltbl::ConvexHull* testHull;
 };
 
 #endif // GAME_OBJECT_HPP
