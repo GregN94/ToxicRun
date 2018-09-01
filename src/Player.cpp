@@ -13,7 +13,9 @@ std::vector<sf::IntRect> drawings = {sf::IntRect(0,    0,   480,  440),
                                      sf::IntRect(0,    440, 480,  440),
                                      sf::IntRect(480,  440, 480,  440),
                                      sf::IntRect(960,  440, 480, 440),
-                                     sf::IntRect(1440, 440, 480, 440)};
+                                     sf::IntRect(1440, 440, 480, 440),
+                                     sf::IntRect(1920, 0,   480, 440)};
+
 
 Player::Player(b2World& world, float positionX, float positionY, sf::Texture& texture, float scale)
 {
@@ -131,7 +133,7 @@ void Player::animate()
     }
     else if (drawingIndex != 7 and drawingIndex != 3)
     {
-        drawingIndex = 3;
+        drawingIndex = 8;
         graphicBody.setTextureRect(drawings.at(drawingIndex));
     }
 }
@@ -151,6 +153,6 @@ void Player::animateRight()
 void Player::animateRun()
 {
     drawingIndex++;
-    if (drawingIndex == 8) drawingIndex = 1;
+    if (drawingIndex == 9) drawingIndex = 1;
     graphicBody.setTextureRect(drawings.at(drawingIndex));
 }

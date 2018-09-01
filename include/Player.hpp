@@ -21,7 +21,7 @@ private:
     void animateLeft();
     void animateRight();
     void move(bool predicate, float force);
-    int drawingIndex = 3;
+    int drawingIndex = 8;
     sf::Clock clock;
     float playerScale;
 
