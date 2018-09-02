@@ -8,16 +8,17 @@ add_compile_options(-Wall -Wextra -Wpedantic)
 set(CMAKE_CXX_STANDARD 17)
 
 
-set(SCR ${PROJECT_SOURCE_DIR}/src)
+set(SRC ${PROJECT_SOURCE_DIR}/src)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake-modules")
 # all source files
 set(SOURCES
-        ${SCR}/GameObject.cpp
-        ${SCR}/Player.cpp
         main.cpp
-        ${SCR}/GameObjects.cpp
-        ${SCR}/MyContactListener.cpp)
+        ${SRC}/GameObject.cpp
+        ${SRC}/Player.cpp
+        ${SRC}/GameObjects.cpp
+        ${SRC}/MyContactListener.cpp
+        ${SRC}/ShadowObject.cpp)
 
 find_package(SFML REQUIRED COMPONENTS System Window Graphics)
 find_package(Box2D REQUIRED)

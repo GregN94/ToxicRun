@@ -1,12 +1,12 @@
 #include "Player.hpp"
 #include <iostream>
 
-#define MAX_SPEED   4
-#define FORCE       1000
-#define AIR_FORCE   60
+#define STAND_IMG   8
+#define RISE_IMG    3
+#define FALL_IMG    2
 
 
-std::vector<sf::IntRect> drawings = {sf::IntRect(0,    0,   480,  440),
+std::vector<sf::IntRect> images = {sf::IntRect(0,    0,   480,  440),
                                      sf::IntRect(480,  0,   480,  440),
                                      sf::IntRect(960,  0,   480, 440),
                                      sf::IntRect(1440, 0,   480, 440),
@@ -19,64 +19,48 @@ std::vector<sf::IntRect> drawings = {sf::IntRect(0,    0,   480,  440),
 
 Player::Player(b2World& world, float positionX, float positionY, sf::Texture& texture, float scale)
 {
-    playerScale = scale;
-    graphicBody.setTexture(texture);
-    graphicBody.setTextureRect(drawings.at(drawingIndex));
-    graphicBody.setOrigin( (float) graphicBody.getTextureRect().width / 2,
-                           (float) graphicBody.getTextureRect().height / 2);
-
-    graphicBody.setPosition(positionX, positionY);
-    graphicBody.setScale(playerScale, playerScale);
-
-
-    b2BodyDef body;
-    body.position = b2Vec2(positionX / BOX2D_SCALE, positionY / BOX2D_SCALE);
-    body.type = b2_dynamicBody;
-    physicalBody = world.CreateBody(&body);
-    b2PolygonShape shape;
-    shape.SetAsBox(graphicBody.getTextureRect().width  * 0.3 * playerScale  / (2 * BOX2D_SCALE),
-                   graphicBody.getTextureRect().height * 0.75 *playerScale  / (2 * BOX2D_SCALE));
-
-    b2FixtureDef fixtureDef;
-    fixtureDef.density = DENSITY;
-    fixtureDef.friction = FRICTION;
-    fixtureDef.shape = &shape;
-    physicalBody->CreateFixture(&fixtureDef);
-    physicalBody->SetUserData( (void*)1 );
+    objectScale = scale;
+    createGraphicBody(texture, images.at(imageIndex), positionX, positionY);
+    createPhysicalBody(world, b2_dynamicBody, positionX, positionY, 0.2, 0.75, DENSITY, FRICTION);
 
     graphicBody.setRotation(physicalBody->GetAngle() * 180 / b2_pi);
-    physicalBody->SetSleepingAllowed(true);
+    createFootSensor();
 
-    b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(0.3, 0.3, b2Vec2(0, graphicBody.getTextureRect().height *0.75* playerScale / (2 * BOX2D_SCALE)), 0);
-
-    //fixture definition
-    b2FixtureDef myFixtureDef;
-    myFixtureDef.shape = &polygonShape;
-    myFixtureDef.density = 1;
-    myFixtureDef.isSensor = true;
-
-    //add main fixture
-    physicalBody->CreateFixture(&myFixtureDef);
-
-    b2Fixture* footSensorFixture = physicalBody->CreateFixture(&myFixtureDef);
-    footSensorFixture->SetUserData( (void*)3 );
-
-    b2MassData mass{18, physicalBody->GetLocalCenter(), physicalBody->GetInertia()};
+    b2MassData mass{MASS, physicalBody->GetLocalCenter(), physicalBody->GetInertia()};
     physicalBody->SetMassData(&mass);
-    physicalBody->SetAngularDamping(2);
-    physicalBody->SetSleepingAllowed(false);
 
+    physicalBody->SetSleepingAllowed(false);
     physicalBody->SetFixedRotation(true);
 
+    createLight();
+}
 
-    testLight = new ltbl::Light();
-    testLight->center = Vec2f(graphicBody.getPosition().x, 1080 - graphicBody.getPosition().y);
-    testLight->radius = 300.0f;
-    testLight->size = 30.0f;
-    testLight->softSpreadAngle = 0.0f;
+void Player::createFootSensor()
+{
+    b2Vec2 center = b2Vec2(0, graphicBody.getTextureRect().height *
+                                                   0.75 * objectScale / (2 * BOX2D_SCALE));
+    float width = 0.3;
+    float height = 0.3;
+    float angle = 0;
+    b2PolygonShape footSensorShape;
+    footSensorShape.SetAsBox(width, height, center, angle);
 
+    b2FixtureDef sensorFixtureDef;
+    sensorFixtureDef.shape = &footSensorShape;
+    sensorFixtureDef.density = 1;
+    sensorFixtureDef.isSensor = true;
 
+    b2Fixture* footSensorFixture = physicalBody->CreateFixture(&sensorFixtureDef);
+    footSensorFixture->SetUserData( (void*)3 );
+}
+
+void Player::createLight()
+{
+    light = new ltbl::Light();
+    light->center = Vec2f(graphicBody.getPosition().x, 1080 - graphicBody.getPosition().y);
+    light->radius = 300.0f;
+    light->size = 30.0f;
+    light->softSpreadAngle = 0.0f;
 }
 
 void Player::moveLeft()
@@ -105,7 +89,7 @@ void Player::jump()
 {
     if ( canIJump )
     {
-        float impulse = -physicalBody->GetMass() * 2.7;
+        float impulse = -physicalBody->GetMass() * IMPULSE;
         physicalBody->ApplyLinearImpulse(b2Vec2(0, impulse), physicalBody->GetWorldCenter(), true);
     }
 }
@@ -114,82 +98,86 @@ void Player::update()
 {
     GameObject::update();
     if (clock.getElapsedTime().asSeconds() > 0.1f){
-        animate();
+        animation();
         clock.restart();
     }
-    testLight->center.x = graphicBody.getPosition().x;
-    testLight->center.y = 1080 - graphicBody.getPosition().y;
-    testLight->updateTreeStatus();
+    light->center.x = graphicBody.getPosition().x;
+    light->center.y = 1080 - graphicBody.getPosition().y;
+    light ->updateTreeStatus();
 }
 
-void Player::animate()
+void Player::changeDirection()
 {
+    if (isMovingRight())
+        rotate(RIGHT);
+    else if (isMovingLeft())
+        rotate(LEFT);
+}
+
+void Player::rotate(Direction direction)
+{
+    graphicBody.setScale( { direction * objectScale, objectScale} );
+}
+
+void Player::animation()
+{
+    changeDirection();
     if (canIJump)
+        runAnimation();
+    else jumpAnimation();
+}
+
+void Player::jumpAnimation()
+{
+    if (isMovingUp())
     {
-        if (physicalBody->GetLinearVelocity().x > 0.1)
-        {
-            animateRight();
-            return;
-        }
-        else if (physicalBody->GetLinearVelocity().x < -0.1)
-        {
-            animateLeft();
-            return;
-        }
-        else if (drawingIndex != 8)
-        {
-            drawingIndex = 8;
-            graphicBody.setTextureRect(drawings.at(drawingIndex));
-        }
+        imageIndex = RISE_IMG;
+        graphicBody.setTextureRect(images.at(imageIndex));
     }
-    else
+    else if (isMovingDown())
     {
-
-        if (physicalBody->GetLinearVelocity().x > 0.1)
-        {
-            graphicBody.setScale({playerScale, playerScale});
-        }
-        else if (physicalBody->GetLinearVelocity().x < -0.1)
-        {
-            graphicBody.setScale({-playerScale, playerScale});
-        }
-
-        if (physicalBody->GetLinearVelocity().y < -0.15)
-        {
-            drawingIndex = 3;
-            graphicBody.setTextureRect(drawings.at(drawingIndex));
-        }
-        else if (physicalBody->GetLinearVelocity().y > 0.15)
-        {
-            drawingIndex = 2;
-            graphicBody.setTextureRect(drawings.at(drawingIndex));
-        }
-        else if (drawingIndex != 8)
-        {
-            drawingIndex = 8;
-            graphicBody.setTextureRect(drawings.at(drawingIndex));
-        }
-
+        imageIndex = FALL_IMG;
+        graphicBody.setTextureRect(images.at(imageIndex));
     }
-    std::cout <<drawingIndex <<std::endl;
+    else stand();
 }
 
-
-void Player::animateLeft()
+void Player::runAnimation()
 {
-    animateRun();
-    graphicBody.setScale({-playerScale, playerScale});
+    if (isMovingLeft() or isMovingRight())
+    {
+        imageIndex++;
+        if (imageIndex == 9) imageIndex = 0;
+        graphicBody.setTextureRect(images.at(imageIndex));
+    }
+    else stand();
 }
 
-void Player::animateRight()
+void Player::stand()
 {
-    animateRun();
-    graphicBody.setScale({playerScale, playerScale});
+    if (imageIndex != STAND_IMG)
+    {
+        imageIndex = STAND_IMG;
+        graphicBody.setTextureRect(images.at(imageIndex));
+    }
 }
 
-void Player::animateRun()
+bool Player::isMovingLeft()
 {
-    drawingIndex++;
-    if (drawingIndex == 9) drawingIndex = 1;
-    graphicBody.setTextureRect(drawings.at(drawingIndex));
+    return physicalBody->GetLinearVelocity().x < -0.1;
+}
+
+bool Player::isMovingRight()
+{
+    return physicalBody->GetLinearVelocity().x > 0.1;
+}
+
+bool Player::isMovingUp()
+{
+    return physicalBody->GetLinearVelocity().y < -0.15;
+}
+
+bool Player::isMovingDown()
+{
+    return physicalBody->GetLinearVelocity().y > 0.15;
 }

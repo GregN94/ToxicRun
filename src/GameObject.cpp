@@ -6,68 +6,70 @@ GameObject::GameObject(b2World& world,
                        sf::Texture& texture,
                        float scale,
                        b2BodyType type,
-                       float friction)
+                       float friction,
+                       sf::Rect<int> textureRect)
+{
+    objectScale = scale;
+    createGraphicBody(texture, textureRect, positionX, positionY);
+    createPhysicalBody(world, type, positionX, positionY, 1, 1, DENSITY, friction);
+
+    graphicBody.setRotation(physicalBody->GetAngle() * 180 / b2_pi);
+    physicalBody->SetSleepingAllowed(true);
+}
+
+void GameObject::createPhysicalBody(b2World& world,
+                                    b2BodyType type,
+                                    float positionX,
+                                    float positionY,
+                                    float widthScale,
+                                    float heightScale,
+                                    float density,
+                                    float friction)
+{
+    b2BodyDef bodyDef;
+    bodyDef.position = b2Vec2(positionX / BOX2D_SCALE, positionY / BOX2D_SCALE);
+    bodyDef.type = type;
+    physicalBody = world.CreateBody(&bodyDef);
+    b2PolygonShape shape;
+    shape.SetAsBox(graphicBody.getTextureRect().width  * widthScale  * objectScale / (2 * BOX2D_SCALE),
+                   graphicBody.getTextureRect().height * heightScale * objectScale / (2 * BOX2D_SCALE));
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.density = density;
+    fixtureDef.friction = friction;
+    fixtureDef.shape = &shape;
+    physicalBody->CreateFixture(&fixtureDef);
+}
+
+void GameObject::createGraphicBody(sf::Texture& texture, sf::Rect<int>rect, float positionX, float positionY)
 {
     graphicBody.setTexture(texture);
+    if (rect.height != 0 && rect.width != 0)
+    {
+        graphicBody.setTextureRect(rect);
+    }
     graphicBody.setOrigin( (float) graphicBody.getTextureRect().width / 2,
                            (float) graphicBody.getTextureRect().height / 2);
 
     graphicBody.setPosition(positionX, positionY);
-    graphicBody.setScale(scale, scale);
-    b2BodyDef body;
-    body.position = b2Vec2(positionX / BOX2D_SCALE, positionY / BOX2D_SCALE);
-    body.type = type;
-    physicalBody = world.CreateBody(&body);
-    b2PolygonShape shape;
-    shape.SetAsBox(graphicBody.getTextureRect().width  * scale / (2 * BOX2D_SCALE),
-                   graphicBody.getTextureRect().height * scale / (2 * BOX2D_SCALE));
-
-    b2FixtureDef fixtureDef;
-    fixtureDef.density = DENSITY;
-    fixtureDef.friction = friction;
-    fixtureDef.shape = &shape;
-    physicalBody->CreateFixture(&fixtureDef);
-    physicalBody->SetUserData( (void*)1 );
-
-    graphicBody.setRotation(physicalBody->GetAngle() * 180 / b2_pi);
-    physicalBody->SetSleepingAllowed(true);
-
-    testHull = new ltbl::ConvexHull();
-    ltbl::ConvexHullVertex newVertex;
-
-
-
-    newVertex.position.x = static_cast<float>(-graphicBody.getTextureRect().width * scale / 2);
-    newVertex.position.y = static_cast<float>(graphicBody.getTextureRect().height * scale / 2);
-    testHull->vertices.push_back(newVertex);
-
-    newVertex.position.x = static_cast<float>(-graphicBody.getTextureRect().width * scale / 2);
-    newVertex.position.y = static_cast<float>(-graphicBody.getTextureRect().height* scale  / 2);
-    testHull->vertices.push_back(newVertex);
-
-    newVertex.position.x = static_cast<float>(graphicBody.getTextureRect().width * scale / 2);
-    newVertex.position.y = static_cast<float>(-graphicBody.getTextureRect().height * scale / 2);
-    testHull->vertices.push_back(newVertex);
-
-
-
-    newVertex.position.x = static_cast<float>(graphicBody.getTextureRect().width * scale / 2);
-    newVertex.position.y = static_cast<float>(graphicBody.getTextureRect().height * scale / 2);
-    testHull->vertices.push_back(newVertex);
-
-
-
-    testHull->centerHull();
-    testHull->calculateNormals();
-    testHull->setWorldCenter(Vec2f(graphicBody.getPosition().x, 1080 - graphicBody.getPosition().y));
-    testHull->generateAABB();
+    graphicBody.setScale(objectScale, objectScale);
 }
 
 void GameObject::setPosition(float x, float y)
 {
-    b2Vec2 vec = b2Vec2(x / 30, y / 30);
+    b2Vec2 vec = b2Vec2(x / BOX2D_SCALE, y / BOX2D_SCALE);
     physicalBody->SetTransform(vec, 0);
     graphicBody.setPosition(x, y);
+}
+
+void GameObject::lower()
+{
+    if (isMovingAllowed)
+    {
+        float y = 0.005;
+        physicalBody->SetTransform(b2Vec2(physicalBody->GetPosition().x, physicalBody->GetPosition().y + y),
+                                   physicalBody->GetAngle());
+    }
 }
 
 void GameObject::update()

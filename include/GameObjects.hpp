@@ -2,6 +2,8 @@
 #define GAME_OBJECTS_H
 
 #include "GameObject.hpp"
+#include "ShadowObject.hpp"
+#include "Player.hpp"
 #include <SFML/Graphics.hpp>
 
 class GameObjects
@@ -9,11 +11,23 @@ class GameObjects
 public:
     GameObjects() {objectList.reserve(40);}
     void update();
-    void add(GameObject);
+    void lower();
     void draw(sf::RenderWindow&);
 
+    void loadTextures();
+    void createWalls(b2World& world, sf::VideoMode videoMode);
+    void createGround(b2World& world, sf::VideoMode videoMode);
+    void createPlatform(b2World &world, ltbl::LightSystem &lightSystem, float positionX, float positionY);
+    std::shared_ptr<Player> createPlayer(b2World& world, sf::VideoMode videoMode, ltbl::LightSystem& lightSystem);
+
+
+
+private:
     std::vector<std::shared_ptr<IGameObject>> objectList;
-    void add(std::shared_ptr<IGameObject> object_ptr);
+
+    sf::Texture platformTexture;
+    sf::Texture playerTexture;
+    sf::Texture wallTexture;
 };
 
-#endif GAME_OBJECTS_H
+#endif //GAME_OBJECTS_H

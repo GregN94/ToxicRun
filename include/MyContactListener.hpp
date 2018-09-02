@@ -13,4 +13,4 @@ public:
 };
 
 
-#endif MY_CONTACT_LISTENER_HPP
+#endif //MY_CONTACT_LISTENER_HPP
