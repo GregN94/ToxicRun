@@ -70,7 +70,6 @@ int main()
     gameObjects.add(platform);
     ls.addConvexHull(platform.testHull);
 
-    std::cout << "x: " << platform.graphicBody.getPosition().x << " Y: " << platform.graphicBody.getPosition().y << std::endl;
 
 
     GameObject platform2(world,
@@ -80,7 +79,7 @@ int main()
                         0.5,
                         b2_staticBody);
     gameObjects.add(platform2);
-//    ls.addConvexHull(platform2.testHull);
+    ls.addConvexHull(platform2.testHull);
 
     GameObject platform3(world,
                          SCREEN_WIDTH / 2 -200,
@@ -89,22 +88,12 @@ int main()
                          0.5,
                          b2_staticBody);
     gameObjects.add(platform3);
-//    ls.addConvexHull(platform3.testHull);
+    ls.addConvexHull(platform3.testHull);
 
 
 
     MyContactListener myContactListenerInstance(&player->canIJump);
     world.SetContactListener(&myContactListenerInstance);
-
-//    ltbl::ConvexHull* testHull = new ltbl::ConvexHull();
-//    if(!testHull->loadShape("data/testShape.txt"))
-//        abort();
-//
-//    // Pre-calculate certain aspects
-//    testHull->calculateNormals();
-//    testHull->generateAABB();
-//    testHull->setWorldCenter(Vec2f(200.0f, 200.0f));
-//    ls.addConvexHull(testHull);
 
     while (window.isOpen())
     {

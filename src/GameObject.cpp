@@ -59,8 +59,8 @@ GameObject::GameObject(b2World& world,
 
     testHull->centerHull();
     testHull->calculateNormals();
+    testHull->setWorldCenter(Vec2f(graphicBody.getPosition().x, 1080 - graphicBody.getPosition().y));
     testHull->generateAABB();
-    testHull->setWorldCenter(Vec2f(0, 0));
 }
 
 void GameObject::setPosition(float x, float y)

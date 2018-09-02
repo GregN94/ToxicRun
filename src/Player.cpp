@@ -71,11 +71,12 @@ Player::Player(b2World& world, float positionX, float positionY, sf::Texture& te
 
 
     testLight = new ltbl::Light();
-    testLight->center = Vec2f(200.0f, 200.0f);
-    testLight->radius = 700.0f;
-    testLight->size = 20.0f;
+    testLight->center = Vec2f(graphicBody.getPosition().x, 1080 - graphicBody.getPosition().y);
+    testLight->radius = 300.0f;
+    testLight->size = 30.0f;
     testLight->softSpreadAngle = 0.0f;
-    testLight->calculateAABB();
+
+
 }
 
 void Player::moveLeft()
@@ -123,20 +124,56 @@ void Player::update()
 
 void Player::animate()
 {
-    if (physicalBody->GetLinearVelocity().x > 0.1)
+    if (canIJump)
     {
-        animateRight();
+        if (physicalBody->GetLinearVelocity().x > 0.1)
+        {
+            animateRight();
+            return;
+        }
+        else if (physicalBody->GetLinearVelocity().x < -0.1)
+        {
+            animateLeft();
+            return;
+        }
+        else if (drawingIndex != 8)
+        {
+            drawingIndex = 8;
+            graphicBody.setTextureRect(drawings.at(drawingIndex));
+        }
     }
-    else if (physicalBody->GetLinearVelocity().x < -0.1)
+    else
     {
-        animateLeft();
+
+        if (physicalBody->GetLinearVelocity().x > 0.1)
+        {
+            graphicBody.setScale({playerScale, playerScale});
+        }
+        else if (physicalBody->GetLinearVelocity().x < -0.1)
+        {
+            graphicBody.setScale({-playerScale, playerScale});
+        }
+
+        if (physicalBody->GetLinearVelocity().y < -0.15)
+        {
+            drawingIndex = 3;
+            graphicBody.setTextureRect(drawings.at(drawingIndex));
+        }
+        else if (physicalBody->GetLinearVelocity().y > 0.15)
+        {
+            drawingIndex = 2;
+            graphicBody.setTextureRect(drawings.at(drawingIndex));
+        }
+        else if (drawingIndex != 8)
+        {
+            drawingIndex = 8;
+            graphicBody.setTextureRect(drawings.at(drawingIndex));
+        }
+
     }
-    else if (drawingIndex != 7 and drawingIndex != 3)
-    {
-        drawingIndex = 8;
-        graphicBody.setTextureRect(drawings.at(drawingIndex));
-    }
+    std::cout <<drawingIndex <<std::endl;
 }
+
 
 void Player::animateLeft()
 {
