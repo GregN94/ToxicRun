@@ -1,5 +1,3 @@
-#include <GameObjects.hpp>
-
 #include "GameObjects.hpp"
 #include "ShadowObject.hpp"
 
@@ -71,9 +69,9 @@ void GameObjects::createPlatform(b2World &world, ltbl::LightSystem &lightSystem,
                                                                       positionY,
                                                                       platformTexture,
                                                                       0.15,
-                                                                      b2_staticBody);
+                                                                      b2_staticBody,
+                                                                      lightSystem);
     objectList.push_back(platform);
-    lightSystem.addConvexHull(platform->convexHull);
 }
 
 std::shared_ptr<Player> GameObjects::createPlayer(b2World& world, sf::VideoMode videoMode, ltbl::LightSystem& lightSystem)

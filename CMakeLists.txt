@@ -2,11 +2,9 @@ cmake_minimum_required(VERSION 3.12)
 
 project(ToxicRun)
 
-
 add_compile_options(-Wall -Wextra -Wpedantic)
 
 set(CMAKE_CXX_STANDARD 17)
-
 
 set(SRC ${PROJECT_SOURCE_DIR}/src)
 
@@ -18,7 +16,8 @@ set(SOURCES
         ${SRC}/Player.cpp
         ${SRC}/GameObjects.cpp
         ${SRC}/MyContactListener.cpp
-        ${SRC}/ShadowObject.cpp)
+        ${SRC}/ShadowObject.cpp
+        ${SRC}/MapGenerator.cpp)
 
 find_package(SFML REQUIRED COMPONENTS System Window Graphics)
 find_package(Box2D REQUIRED)

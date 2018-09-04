@@ -3,6 +3,7 @@
 #include "Player.hpp"
 #include "MyContactListener.hpp"
 #include "ShadowObject.hpp"
+#include "MapGenerator.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
@@ -34,9 +35,9 @@ int main()
 
     gameObjects.createGround(world, videoMode);
     gameObjects.createWalls(world, videoMode);
-    gameObjects.createPlatform(world, lightSystem, SCREEN_WIDTH / 2, SCREEN_HEIGHT - 200);
-    gameObjects.createPlatform(world, lightSystem, SCREEN_WIDTH / 2 + 200, SCREEN_HEIGHT / 2 + 200);
-    gameObjects.createPlatform(world, lightSystem, SCREEN_WIDTH / 2 -200, SCREEN_HEIGHT / 2);
+    MapGenerator mapGenerator(gameObjects, videoMode, lightSystem, world);
+    mapGenerator.generateMap();
+
 
     MyContactListener myContactListenerInstance(&player->canIJump);
     world.SetContactListener(&myContactListenerInstance);
@@ -71,7 +72,7 @@ int main()
         lightSystem.renderLightTexture(0.0f); // Draw the lights
 
         window.display();
-        world.Step(1/60.f, 8, 3);
+        world.Step(1 / 60.f, 8, 3);
     }
     return 0;
 }

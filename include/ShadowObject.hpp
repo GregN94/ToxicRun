@@ -14,8 +14,10 @@ public:
                 sf::Texture& texture,
                 float scale,
                 b2BodyType type,
+                 ltbl::LightSystem& ls,
                 float friction = FRICTION);
     ltbl::ConvexHull* convexHull;
+    ltbl::LightSystem& ls;
 
     void update() override;
 

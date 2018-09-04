@@ -26,7 +26,7 @@ Player::Player(b2World& world, float positionX, float positionY, sf::Texture& te
     graphicBody.setRotation(physicalBody->GetAngle() * 180 / b2_pi);
     createFootSensor();
 
-    b2MassData mass{MASS, physicalBody->GetLocalCenter(), physicalBody->GetInertia()};
+    b2MassData mass {MASS, physicalBody->GetLocalCenter(), physicalBody->GetInertia()};
     physicalBody->SetMassData(&mass);
 
     physicalBody->SetSleepingAllowed(false);
@@ -57,8 +57,9 @@ void Player::createFootSensor()
 void Player::createLight()
 {
     light = new ltbl::Light();
+//    light->center = Vec2f(1920 / 2, 1080 / 2);
     light->center = Vec2f(graphicBody.getPosition().x, 1080 - graphicBody.getPosition().y);
-    light->radius = 300.0f;
+    light->radius = LIGHT_RADIUS;
     light->size = 30.0f;
     light->softSpreadAngle = 0.0f;
 }

@@ -8,6 +8,7 @@ ShadowObject::ShadowObject(b2World &world,
                            sf::Texture &texture,
                            float scale,
                            b2BodyType type,
+                            ltbl::LightSystem& ls,
                            float friction)
        : GameObject(world,
                     positionX,
@@ -15,7 +16,7 @@ ShadowObject::ShadowObject(b2World &world,
                     texture,
                     scale,
                     type,
-                    friction)
+                    friction), ls(ls)
 {
     convexHull = new ltbl::ConvexHull();
     ltbl::ConvexHullVertex newVertex;
@@ -40,11 +41,15 @@ ShadowObject::ShadowObject(b2World &world,
     convexHull->calculateNormals();
     convexHull->setWorldCenter(Vec2f(graphicBody.getPosition().x, 1080 - graphicBody.getPosition().y));
     convexHull->generateAABB();
+    ls.addConvexHull(convexHull);
 }
 
 void ShadowObject::update()
 {
+    ls.removeConvexHull(convexHull);
     GameObject::update();
     convexHull->setWorldCenter(Vec2f(graphicBody.getPosition().x, 1080 - graphicBody.getPosition().y));
     convexHull->generateAABB();
+    ls.addConvexHull(convexHull);
+
 }

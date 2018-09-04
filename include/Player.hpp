@@ -3,12 +3,13 @@
 
 #include "GameObject.hpp"
 
-#define MAX_SPEED       4
+#define MAX_SPEED       3.5
 #define FORCE           1000
 #define AIR_FORCE       60
 #define MASS            18
 #define IMPULSE         2.7
 #define PLAYER_SCALE    0.3
+#define LIGHT_RADIUS    1500
 
 enum Direction
 {
