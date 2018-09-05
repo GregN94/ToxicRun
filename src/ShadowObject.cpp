@@ -1,6 +1,8 @@
 #include "ShadowObject.hpp"
 
 #include <iostream>
+#include <ShadowObject.hpp>
+
 
 ShadowObject::ShadowObject(b2World &world,
                            float positionX,
@@ -51,5 +53,9 @@ void ShadowObject::update()
     convexHull->setWorldCenter(Vec2f(graphicBody.getPosition().x, 1080 - graphicBody.getPosition().y));
     convexHull->generateAABB();
     ls.addConvexHull(convexHull);
+}
 
+ShadowObject::~ShadowObject()
+{
+    ls.removeConvexHull(convexHull);
 }

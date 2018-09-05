@@ -6,6 +6,14 @@ void GameObjects::update()
     for (const auto object : objectList) {
         object->update();
     }
+    for (auto it = objectList.begin(); it != objectList.end(); it++)
+    {
+        if (it->get()->getPosition().y > 1100)
+        {
+            objectList.erase(it);
+            break;
+        }
+    }
 }
 
 void GameObjects::lower()
@@ -62,7 +70,7 @@ void GameObjects::createGround(b2World &world, sf::VideoMode videoMode)
 
 }
 
-void GameObjects::createPlatform(b2World &world, ltbl::LightSystem &lightSystem, float positionX, float positionY)
+std::shared_ptr<ShadowObject> GameObjects::createPlatform(b2World &world, ltbl::LightSystem &lightSystem, float positionX, float positionY)
 {
     std::shared_ptr<ShadowObject> platform = std::make_shared<ShadowObject>(world,
                                                                       positionX,
@@ -72,6 +80,7 @@ void GameObjects::createPlatform(b2World &world, ltbl::LightSystem &lightSystem,
                                                                       b2_staticBody,
                                                                       lightSystem);
     objectList.push_back(platform);
+    return platform;
 }
 
 std::shared_ptr<Player> GameObjects::createPlayer(b2World& world, sf::VideoMode videoMode, ltbl::LightSystem& lightSystem)

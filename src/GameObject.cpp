@@ -1,3 +1,6 @@
+
+#include <GameObject.hpp>
+
 #include "GameObject.hpp"
 
 GameObject::GameObject(b2World& world,
@@ -66,7 +69,7 @@ void GameObject::lower()
 {
     if (isMovingAllowed)
     {
-        float y = 0.005;
+        float y = 0.035;
         physicalBody->SetTransform(b2Vec2(physicalBody->GetPosition().x, physicalBody->GetPosition().y + y),
                                    physicalBody->GetAngle());
     }
@@ -82,4 +85,16 @@ void GameObject::update()
 sf::Sprite GameObject::getBody()
 {
     return graphicBody;
+}
+
+sf::Vector2f GameObject::getPosition()
+{
+    return graphicBody.getPosition();
+
+}
+
+GameObject::~GameObject()
+{
+    physicalBody->GetWorld()->DestroyBody(physicalBody);
+
 }

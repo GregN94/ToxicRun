@@ -67,6 +67,7 @@ int main()
 
         gameObjects.update();
         gameObjects.draw(window);
+        mapGenerator.update();
 
         lightSystem.renderLights(); // Calculate the lights
         lightSystem.renderLightTexture(0.0f); // Draw the lights

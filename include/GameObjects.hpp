@@ -17,7 +17,7 @@ public:
     void loadTextures();
     void createWalls(b2World& world, sf::VideoMode videoMode);
     void createGround(b2World& world, sf::VideoMode videoMode);
-    void createPlatform(b2World &world, ltbl::LightSystem &lightSystem, float positionX, float positionY);
+    std::shared_ptr<ShadowObject> createPlatform(b2World &world, ltbl::LightSystem &lightSystem, float positionX, float positionY);
     std::shared_ptr<Player> createPlayer(b2World& world, sf::VideoMode videoMode, ltbl::LightSystem& lightSystem);
 
 

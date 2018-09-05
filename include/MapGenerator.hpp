@@ -3,10 +3,11 @@
 
 #include "GameObjects.hpp"
 
-#define MIN_WIDTH 400
-#define MAX_WIDTH 580
-#define MIN_HIGHT 150
-#define MAX_HIGHT 250
+struct Position
+{
+    float x;
+    float y;
+};
 
 class MapGenerator
 {
@@ -16,12 +17,17 @@ public:
                  ltbl::LightSystem& lightSystem,
                  b2World& world);
     void generateMap();
+    void createMapFragment(Position mapFragment);
+    void update();
 
 private:
     GameObjects& gameObjects;
     sf::VideoMode videoMode;
     ltbl::LightSystem& lightSystem;
     b2World& world;
+    std::vector<Position> mapParts;
+    float highest = 0;
+    std::shared_ptr<ShadowObject> highestPlatform;
 };
 
 

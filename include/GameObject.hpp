@@ -12,8 +12,10 @@
 class IGameObject
 {
 public:
+    virtual ~IGameObject(){};
     virtual void update() = 0;
     virtual void setPosition(float x, float y) = 0;
+    virtual sf::Vector2f getPosition() = 0;
     virtual void lower() = 0;
     virtual sf::Sprite getBody() = 0;
 };
@@ -32,7 +34,10 @@ public:
 
     GameObject(){};
 
+    ~GameObject() override;
+
     void setPosition(float x, float y) override;
+    sf::Vector2f getPosition() override;
     void lower() override;
     void update() override;
     sf::Sprite getBody() override;
