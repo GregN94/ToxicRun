@@ -9,7 +9,7 @@
 #define MASS            18
 #define IMPULSE         2.7
 #define PLAYER_SCALE    0.3
-#define LIGHT_RADIUS    600
+#define LIGHT_RADIUS    2000
 
 enum Direction
 {

@@ -1,6 +1,7 @@
 
 #include <MapGenerator.hpp>
-
+//#include <iostream>
+#include <random>
 #include "MapGenerator.hpp"
 
 #define MIN_WIDTH 400
@@ -8,12 +9,21 @@
 #define MIN_HEIGHT 150
 #define MAX_HEIGHT 250
 
-std::vector<Position> fragment = { {200, 0},
-                                   {400, 150},
-                                   {400 + MAX_WIDTH, 150},
-                                   {600, 100 + MAX_HEIGHT} };
+std::vector<Position> fragment_01 = { {200, 0},
+//                                      {400, 150},
+                                      {800, 200},
+                                      {600, 100 + MAX_HEIGHT} };
 
-std::vector<std::vector<Position>> mapFragments = {fragment};
+std::vector<Position> fragment_02 = { {900, 0},
+                                      {400, 200},
+                                      {600, 100 + MAX_HEIGHT} };
+
+std::vector<Position> fragment_03 = { {400, 200},
+                                      {900, 400} };
+
+std::vector<std::vector<Position>> mapFragments = { fragment_01,
+                                                    fragment_02,
+                                                    fragment_03 };
 
 
 
@@ -30,6 +40,8 @@ MapGenerator::MapGenerator(GameObjects &gameObjects, sf::VideoMode videoMode, lt
     mapParts.push_back( { (float) videoMode.width / 2, 0 } );
     mapParts.push_back( { 0, (float) videoMode.height / 2 } );
     mapParts.push_back( { (float) videoMode.width / 2, (float) videoMode.height / 2 } );
+
+
 }
 
 void MapGenerator::generateMap()
@@ -42,7 +54,11 @@ void MapGenerator::generateMap()
 
 void MapGenerator::createMapFragment(Position mapFragment)
 {
-    for (const auto platformPosition : fragment)
+    std::random_device rd; // obtain a random number from hardware
+    std::mt19937 eng(rd()); // seed the generator
+    std::uniform_int_distribution<> distr(0, mapFragments.size() - 1); // define the range
+    int index = distr(eng);
+    for (const auto platformPosition : mapFragments.at(index))
     {
         float positionX = platformPosition.x + mapFragment.x;
         float positionY = platformPosition.y + mapFragment.y;
