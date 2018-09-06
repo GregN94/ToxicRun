@@ -31,6 +31,7 @@ Player::Player(b2World& world, float positionX, float positionY, sf::Texture& te
 
     physicalBody->SetSleepingAllowed(false);
     physicalBody->SetFixedRotation(true);
+//    physicalBody->SetLinearDamping(1);
 
     createLight();
 }
@@ -57,7 +58,6 @@ void Player::createFootSensor()
 void Player::createLight()
 {
     light = new ltbl::Light();
-//    light->center = Vec2f(1920 / 2, 1080 / 2);
     light->center = Vec2f(graphicBody.getPosition().x, 1080 - graphicBody.getPosition().y);
     light->radius = LIGHT_RADIUS;
     light->size = 30.0f;
@@ -67,23 +67,22 @@ void Player::createLight()
 void Player::moveLeft()
 {
     if ( canIJump )
-        move(physicalBody->GetLinearVelocity().x > -MAX_SPEED, -FORCE);
+        move(-FORCE);
     else
-        move(physicalBody->GetLinearVelocity().x > -MAX_SPEED, -AIR_FORCE);
+        move(-AIR_FORCE);
 }
 
 void Player::moveRight()
 {
     if ( canIJump )
-        move(physicalBody->GetLinearVelocity().x < MAX_SPEED, FORCE);
+        move(FORCE);
     else
-        move(physicalBody->GetLinearVelocity().x < MAX_SPEED, AIR_FORCE);
+        move(AIR_FORCE);
 }
 
-void Player::move(bool predicate, float force)
+void Player::move(float force)
 {
-    if (predicate)
-        physicalBody->ApplyForce(b2Vec2(force, 0), physicalBody->GetWorldCenter(), true);
+    physicalBody->ApplyForce(b2Vec2(force, 0), physicalBody->GetWorldCenter(), true);
 }
 
 void Player::jump()
@@ -95,9 +94,17 @@ void Player::jump()
     }
 }
 
+void Player::applyAirResistance()
+{
+    float airDampingX = -physicalBody->GetLinearVelocity().x * abs(physicalBody->GetLinearVelocity().x) * AIR_RESISTANCE_X;
+    float airDampingY = -physicalBody->GetLinearVelocity().y * abs(physicalBody->GetLinearVelocity().y) * AIR_RESISTANCE_Y;
+    physicalBody->ApplyForce(b2Vec2(airDampingX, airDampingY), physicalBody->GetWorldCenter(), true);
+}
+
 void Player::update()
 {
     GameObject::update();
+    applyAirResistance();
     if (clock.getElapsedTime().asSeconds() > 0.1f){
         animation();
         clock.restart();

@@ -3,13 +3,14 @@
 
 #include "GameObject.hpp"
 
-#define MAX_SPEED       3
-#define FORCE           1000
-#define AIR_FORCE       60
+#define FORCE           60
+#define AIR_FORCE       25
 #define MASS            18
-#define IMPULSE         2.7
+#define IMPULSE         5
 #define PLAYER_SCALE    0.3
 #define LIGHT_RADIUS    2000
+#define AIR_RESISTANCE_X  0.8
+#define AIR_RESISTANCE_Y  0.3
 
 enum Direction
 {
@@ -30,6 +31,7 @@ public:
     bool canIJump = true;
 
 private:
+    void applyAirResistance();
     void rotate(Direction direction);
     void changeDirection();
     void createLight();
@@ -37,7 +39,7 @@ private:
     void animation();
     void runAnimation();
     void jumpAnimation();
-    void move(bool predicate, float force);
+    void move(float force);
     void stand();
     bool isMovingLeft();
     bool isMovingRight();
