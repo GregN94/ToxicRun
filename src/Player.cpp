@@ -31,7 +31,6 @@ Player::Player(b2World& world, float positionX, float positionY, sf::Texture& te
 
     physicalBody->SetSleepingAllowed(false);
     physicalBody->SetFixedRotation(true);
-//    physicalBody->SetLinearDamping(1);
 
     createLight();
 }

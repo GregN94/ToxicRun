@@ -9,6 +9,7 @@
 #include <Box2D/Box2D.h>
 #include <LTBL/LightSystem.h>
 #include <iostream>
+#include <Water.hpp>
 
 #define SCREEN_WIDTH    1920
 #define SCREEN_HEIGHT   1080
@@ -41,6 +42,7 @@ int main()
 
     MyContactListener myContactListenerInstance(&player->canIJump);
     world.SetContactListener(&myContactListenerInstance);
+    Water water(videoMode);
 
     while (window.isOpen())
     {
@@ -63,17 +65,24 @@ int main()
         if (player->graphicBody.getPosition().y < SCREEN_HEIGHT / 2)
         {
             gameObjects.lower();
+            water.lower();
         }
 
         gameObjects.update();
         gameObjects.draw(window);
         mapGenerator.update();
 
+        water.update();
+        water.draw(window);
+
         lightSystem.renderLights(); // Calculate the lights
         lightSystem.renderLightTexture(0.0f); // Draw the lights
 
+
         window.display();
         world.Step(1 / 60.f, 8, 3);
+
+
     }
     return 0;
 }

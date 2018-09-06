@@ -8,7 +8,7 @@
 #define MASS            18
 #define IMPULSE         5
 #define PLAYER_SCALE    0.3
-#define LIGHT_RADIUS    2000
+#define LIGHT_RADIUS    600
 #define AIR_RESISTANCE_X  0.8
 #define AIR_RESISTANCE_Y  0.3
 
