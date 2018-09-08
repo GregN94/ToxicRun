@@ -46,7 +46,6 @@ Player::~Player()
 {
     lightSystem.removeLight(light);
     delete light;
-    std::cout << "killed player" << std::endl;
 }
 
 void Player::createFootSensor()
@@ -119,10 +118,16 @@ void Player::update()
 {
     GameObject::update();
     applyAirResistance();
-    if (clock.getElapsedTime().asSeconds() > 0.1f){
+    if (animationClock.getElapsedTime().asSeconds() > 0.1f){
         animation();
-        clock.restart();
+        animationClock.restart();
     }
+
+    if (isInWater)
+    {
+        takeDamage();
+    }
+
     light->center.x = graphicBody.getPosition().x;
     light->center.y = 1080 - graphicBody.getPosition().y;
     light ->updateTreeStatus();
@@ -204,7 +209,22 @@ bool Player::isMovingDown()
     return physicalBody->GetLinearVelocity().y > 0.15;
 }
 
-bool Player::isInWater(Water water)
+bool Player::checkIfIsInWater(float waterSurfacePosition)
 {
+    if (graphicBody.getPosition().y + graphicBody.getTextureRect().height * PLAYER_SCALE * 0.35 > waterSurfacePosition)
+    {
+        isInWater = true;
+        return true;
+    }
+    isInWater = false;
     return false;
+
+}
+
+void Player::takeDamage()
+{
+    if (damageClock.getElapsedTime().asSeconds() > 0.3f){
+        damageClock.restart();
+        hp -= 5;
+    }
 }

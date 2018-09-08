@@ -33,13 +33,13 @@ public:
     void moveLeft();
     void moveRight();
     void jump();
-    bool isInWater(Water water);
+    bool checkIfIsInWater(float waterSurfacePosition);
+
+    void takeDamage();
 
     bool canIJump = true;
-
-
+    int hp = 100;
 private:
-    void takeDamage();
     void applyAirResistance();
     void rotate(Direction direction);
     void changeDirection();
@@ -56,10 +56,12 @@ private:
     bool isMovingDown();
 
     int imageIndex = 8;
-    sf::Clock clock;
+    sf::Clock animationClock;
+    sf::Clock damageClock;
     ltbl::LightSystem& lightSystem;
     ltbl::Light* light;
-    int hp = 100;
+
+    bool isInWater = false;
 };
 
 #endif // PLAYER_HPP
