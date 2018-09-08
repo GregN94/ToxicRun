@@ -1,5 +1,7 @@
 #include "Player.hpp"
 #include <iostream>
+#include <Player.hpp>
+
 
 #define STAND_IMG   8
 #define RISE_IMG    3
@@ -200,4 +202,9 @@ bool Player::isMovingUp()
 bool Player::isMovingDown()
 {
     return physicalBody->GetLinearVelocity().y > 0.15;
+}
+
+bool Player::isInWater(Water water)
+{
+    return false;
 }

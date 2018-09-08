@@ -10,6 +10,7 @@ public:
     void draw(sf::RenderWindow& window);
     void update();
     void lower();
+    float getSurfacePosition();
 
 private:
     sf::RectangleShape body;

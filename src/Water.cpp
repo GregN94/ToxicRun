@@ -26,3 +26,8 @@ void Water::lower()
     body.setPosition(0, body.getPosition().y + 0.2);
 
 }
+
+float Water::getSurfacePosition()
+{
+    return body.getPosition().y;
+}

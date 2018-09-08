@@ -78,10 +78,8 @@ int main()
         lightSystem.renderLights(); // Calculate the lights
         lightSystem.renderLightTexture(0.0f); // Draw the lights
 
-
         window.display();
         world.Step(1 / 60.f, 8, 3);
-
 
     }
     return 0;

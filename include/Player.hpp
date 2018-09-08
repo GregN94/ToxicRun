@@ -2,6 +2,7 @@
 #define PLAYER_HPP
 
 #include "GameObject.hpp"
+#include "Water.hpp"
 
 #define FORCE           60
 #define AIR_FORCE       25
@@ -32,10 +33,13 @@ public:
     void moveLeft();
     void moveRight();
     void jump();
+    bool isInWater(Water water);
 
     bool canIJump = true;
 
+
 private:
+    void takeDamage();
     void applyAirResistance();
     void rotate(Direction direction);
     void changeDirection();
@@ -55,6 +59,7 @@ private:
     sf::Clock clock;
     ltbl::LightSystem& lightSystem;
     ltbl::Light* light;
+    int hp = 100;
 };
 
 #endif // PLAYER_HPP
