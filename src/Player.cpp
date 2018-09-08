@@ -5,7 +5,6 @@
 #define RISE_IMG    3
 #define FALL_IMG    2
 
-
 std::vector<sf::IntRect> images = {sf::IntRect(0,    0,   480,  440),
                                      sf::IntRect(480,  0,   480,  440),
                                      sf::IntRect(960,  0,   480, 440),
@@ -17,7 +16,13 @@ std::vector<sf::IntRect> images = {sf::IntRect(0,    0,   480,  440),
                                      sf::IntRect(1920, 0,   480, 440)};
 
 
-Player::Player(b2World& world, float positionX, float positionY, sf::Texture& texture, float scale)
+Player::Player(b2World& world,
+               float positionX,
+               float positionY,
+               sf::Texture& texture,
+               ltbl::LightSystem& lightSystem,
+               float scale)
+    : lightSystem(lightSystem)
 {
     objectScale = scale;
     createGraphicBody(texture, images.at(imageIndex), positionX, positionY);
@@ -35,10 +40,17 @@ Player::Player(b2World& world, float positionX, float positionY, sf::Texture& te
     createLight();
 }
 
+Player::~Player()
+{
+    lightSystem.removeLight(light);
+    delete light;
+    std::cout << "killed player" << std::endl;
+}
+
 void Player::createFootSensor()
 {
-    b2Vec2 center = b2Vec2(0, graphicBody.getTextureRect().height *
-                                                   0.75 * objectScale / (2 * BOX2D_SCALE));
+    b2Vec2 center = b2Vec2(0, (float32)(graphicBody.getTextureRect().height *
+                                        0.75 * objectScale / (2 * BOX2D_SCALE)));
     float width = 0.3;
     float height = 0.3;
     float angle = 0;
@@ -61,6 +73,7 @@ void Player::createLight()
     light->radius = LIGHT_RADIUS;
     light->size = 30.0f;
     light->softSpreadAngle = 0.0f;
+    lightSystem.addLight(light);
 }
 
 void Player::moveLeft()

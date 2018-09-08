@@ -88,8 +88,8 @@ std::shared_ptr<Player> GameObjects::createPlayer(b2World& world, sf::VideoMode 
     std::shared_ptr<Player> player = std::make_shared<Player>(world,
                                                               videoMode.width/ 2,
                                                               videoMode.height - platformTexture.getSize().y,
-                                                              playerTexture);
+                                                              playerTexture,
+                                                              lightSystem);
     objectList.push_back(player);
-    lightSystem.addLight(player->light);
     return player;
 }

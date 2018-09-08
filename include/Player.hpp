@@ -21,13 +21,18 @@ enum Direction
 class Player : public GameObject
 {
 public:
-    Player(b2World& world, float x, float y, sf::Texture& texture, float scale = PLAYER_SCALE);
+    Player(b2World& world,
+           float x,
+           float y,
+           sf::Texture& texture,
+           ltbl::LightSystem& lightSystem,
+           float scale = PLAYER_SCALE);
+    ~Player() override;
     void update() override;
     void moveLeft();
     void moveRight();
     void jump();
 
-    ltbl::Light* light;
     bool canIJump = true;
 
 private:
@@ -48,6 +53,8 @@ private:
 
     int imageIndex = 8;
     sf::Clock clock;
+    ltbl::LightSystem& lightSystem;
+    ltbl::Light* light;
 };
 
 #endif // PLAYER_HPP

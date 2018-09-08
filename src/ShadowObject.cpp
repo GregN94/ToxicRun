@@ -58,4 +58,5 @@ void ShadowObject::update()
 ShadowObject::~ShadowObject()
 {
     ls.removeConvexHull(convexHull);
+    delete convexHull;
 }
