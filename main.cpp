@@ -18,6 +18,9 @@
 #define GRAVITY         9.8
 
 void closeWindow(sf::RenderWindow& window);
+sf::Text gameOverText(sf::RenderWindow& window);
+
+sf::Font font;
 
 int main()
 {
@@ -46,6 +49,7 @@ int main()
 
     Stats stats(window);
 
+    font.loadFromFile("../res/Arial.ttf");
     while (window.isOpen())
     {
         closeWindow(window);
@@ -70,28 +74,52 @@ int main()
             water.lower();
         }
 
-        gameObjects.update();
-        gameObjects.draw(window);
-        mapGenerator.update();
+        if (player->getHp() > 0)
+        {
+            gameObjects.update();
+            mapGenerator.update();
+            water.update();
+            if (player.use_count() == 1)
+            {
+                player->killPlayer();
+            }
+            stats.update(player->getHp(), gameObjects.getDistance());
+        }
 
-        water.update();
+        gameObjects.draw(window);
         water.draw(window);
 
         player->checkIfIsInWater(water.getSurfacePosition());
-        if (player.use_count() == 1)
-            player->takeDamage();
 
         lightSystem.ambientColor = sf::Color(8, 8, 8);
         lightSystem.renderLights(); // Calculate the lights
         lightSystem.renderLightTexture(0.0f); // Draw the lights
 
-        stats.update(player->getHp(), gameObjects.getDistance());
+
         stats.draw();
 
+        if (player->getHp() <= 0)
+            window.draw(gameOverText(window));
         window.display();
         world.Step(1 / 60.f, 8, 3);
     }
     return 0;
+}
+
+sf::Text gameOverText(sf::RenderWindow& window)
+{
+
+
+    sf::Text gameOverText;
+    gameOverText.setFont(font); // font is a sf::Font
+    gameOverText.setCharacterSize(100); // in pixels, not points!
+
+    gameOverText.setFillColor(sf::Color::Green);
+    gameOverText.setPosition(window.getSize().x / 2, window.getSize().y / 2);
+    gameOverText.setStyle(sf::Text::Bold);
+    gameOverText.setString("GAME OVER");
+    gameOverText.setOrigin(gameOverText.getGlobalBounds().width / 2 , gameOverText.getGlobalBounds().height / 2);
+    return gameOverText;
 }
 
 void closeWindow(sf::RenderWindow& window)

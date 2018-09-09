@@ -14,14 +14,12 @@ Stats::Stats(sf::RenderWindow& window)
 
     text.setFont(font); // font is a sf::Font
     text.setCharacterSize(32); // in pixels, not points!
-
     text.setFillColor(sf::Color::Red);
     text.setPosition(60, 60);
     text.setStyle(sf::Text::Bold);
 
     pointsText.setFont(font);
     pointsText.setCharacterSize(32); // in pixels, not points!
-
     pointsText.setFillColor(sf::Color::Yellow);
     pointsText.setPosition(window.getSize().x / 2, 50);
     pointsText.setStyle(sf::Text::Bold);

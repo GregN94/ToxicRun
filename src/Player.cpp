@@ -228,3 +228,11 @@ void Player::takeDamage()
         hp -= 5;
     }
 }
+
+void Player::killPlayer()
+{
+    if (damageClock.getElapsedTime().asSeconds() > 0.05f){
+        damageClock.restart();
+        hp -= 5;
+    }
+}

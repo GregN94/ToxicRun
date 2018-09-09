@@ -36,6 +36,7 @@ public:
     bool checkIfIsInWater(float waterSurfacePosition);
     int getHp() { return hp; }
     void takeDamage();
+    void killPlayer();
 
     bool canIJump = true;
 
