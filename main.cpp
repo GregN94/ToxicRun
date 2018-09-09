@@ -10,6 +10,7 @@
 #include <LTBL/LightSystem.h>
 #include <iostream>
 #include <Water.hpp>
+#include <Stats.hpp>
 
 #define SCREEN_WIDTH    1920
 #define SCREEN_HEIGHT   1080
@@ -39,28 +40,11 @@ int main()
     MapGenerator mapGenerator(gameObjects, videoMode, lightSystem, world);
     mapGenerator.generateMap();
 
-
     MyContactListener myContactListenerInstance(&player->canIJump);
     world.SetContactListener(&myContactListenerInstance);
     Water water(videoMode);
 
-
-    sf::Texture heartTexture;
-    heartTexture.loadFromFile("../res/heart.png");
-    sf::RectangleShape heart(sf::Vector2f(80, 80));
-    heart.setOrigin(40, 40);
-    heart.setPosition(50, 50);
-    heart.setTexture(&heartTexture);
-
-    sf::Font font;
-    font.loadFromFile("../res/Arial.ttf");
-    sf::Text text;
-    text.setFont(font); // font is a sf::Font
-    text.setCharacterSize(32); // in pixels, not points!
-    text.setFillColor(sf::Color::Red);
-    text.setStyle(sf::Text::Bold);
-    text.setOrigin(25, 16);
-    text.setPosition(50, 50);
+    Stats stats(window);
 
     while (window.isOpen())
     {
@@ -101,14 +85,11 @@ int main()
         lightSystem.renderLights(); // Calculate the lights
         lightSystem.renderLightTexture(0.0f); // Draw the lights
 
-        text.setString(std::to_string(player->hp));
-        window.draw(heart);
-        window.draw(text);
-
+        stats.update(player->hp, (int)round(gameObjects.distance));
+        stats.draw();
 
         window.display();
         world.Step(1 / 60.f, 8, 3);
-
     }
     return 0;
 }

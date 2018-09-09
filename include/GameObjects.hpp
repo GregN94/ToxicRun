@@ -21,6 +21,7 @@ public:
     std::shared_ptr<Player> createPlayer(b2World& world, sf::VideoMode videoMode, ltbl::LightSystem& lightSystem);
 
 
+    float distance = 0;
 
 private:
     std::vector<std::shared_ptr<IGameObject>> objectList;
@@ -28,6 +29,7 @@ private:
     sf::Texture platformTexture;
     sf::Texture playerTexture;
     sf::Texture wallTexture;
+
 };
 
 #endif //GAME_OBJECTS_H

@@ -18,6 +18,7 @@ void GameObjects::update()
 
 void GameObjects::lower()
 {
+    distance += 0.035;
     for (const auto object : objectList) {
         object->lower();
     }

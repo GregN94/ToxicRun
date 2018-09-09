@@ -18,7 +18,8 @@ set(SOURCES
         ${SRC}/MyContactListener.cpp
         ${SRC}/ShadowObject.cpp
         ${SRC}/MapGenerator.cpp
-        ${SRC}/Water.cpp)
+        ${SRC}/Water.cpp
+        ${SRC}/Stats.cpp)
 
 find_package(SFML REQUIRED COMPONENTS System Window Graphics)
 find_package(Box2D REQUIRED)
