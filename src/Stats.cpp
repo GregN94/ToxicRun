@@ -1,7 +1,3 @@
-
-#include <Stats.hpp>
-#include <iostream>
-
 #include "Stats.hpp"
 
 Stats::Stats(sf::RenderWindow& window)

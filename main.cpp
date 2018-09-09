@@ -85,7 +85,7 @@ int main()
         lightSystem.renderLights(); // Calculate the lights
         lightSystem.renderLightTexture(0.0f); // Draw the lights
 
-        stats.update(player->hp, (int)round(gameObjects.distance));
+        stats.update(player->getHp(), gameObjects.getDistance());
         stats.draw();
 
         window.display();

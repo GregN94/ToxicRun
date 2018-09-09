@@ -22,5 +22,4 @@ private:
     int distance = 0;
 };
 
-
 #endif //STATS_HPP

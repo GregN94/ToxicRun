@@ -34,11 +34,11 @@ public:
     void moveRight();
     void jump();
     bool checkIfIsInWater(float waterSurfacePosition);
-
+    int getHp() { return hp; }
     void takeDamage();
 
     bool canIJump = true;
-    int hp = 100;
+
 private:
     void applyAirResistance();
     void rotate(Direction direction);
@@ -61,6 +61,7 @@ private:
     ltbl::LightSystem& lightSystem;
     ltbl::Light* light;
 
+    int hp = 100;
     bool isInWater = false;
 };
 

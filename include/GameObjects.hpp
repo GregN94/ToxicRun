@@ -13,6 +13,7 @@ public:
     void update();
     void lower();
     void draw(sf::RenderWindow&);
+    int getDistance() { return (int)round(distance); }
 
     void loadTextures();
     void createWalls(b2World& world, sf::VideoMode videoMode);
