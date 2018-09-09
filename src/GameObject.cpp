@@ -58,13 +58,6 @@ void GameObject::createGraphicBody(sf::Texture& texture, sf::Rect<int>rect, floa
     graphicBody.setScale(objectScale, objectScale);
 }
 
-void GameObject::setPosition(float x, float y)
-{
-    b2Vec2 vec = b2Vec2(x / BOX2D_SCALE, y / BOX2D_SCALE);
-    physicalBody->SetTransform(vec, 0);
-    graphicBody.setPosition(x, y);
-}
-
 void GameObject::lower()
 {
     if (isMovingAllowed)

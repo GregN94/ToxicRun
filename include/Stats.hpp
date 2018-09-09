@@ -9,13 +9,11 @@ public:
     Stats(sf::RenderWindow& window, sf::Font& font);
     void update(int playerHP, int distance);
     void draw();
-    void clear();
 
 private:
     sf::Texture heartTexture;
     sf::RenderWindow& window;
 
-    sf::Font font;
     sf::Sprite heart;
     sf::Text text;
     sf::Text pointsText;

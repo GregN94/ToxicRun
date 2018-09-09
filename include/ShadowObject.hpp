@@ -16,7 +16,7 @@ public:
                 b2BodyType type,
                  ltbl::LightSystem& ls,
                 float friction = FRICTION);
-    ~ShadowObject();
+    ~ShadowObject() override;
     ltbl::ConvexHull* convexHull;
     ltbl::LightSystem& ls;
 

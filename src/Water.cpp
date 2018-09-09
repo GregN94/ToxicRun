@@ -17,13 +17,13 @@ void Water::draw(sf::RenderWindow& window)
 
 void Water::update()
 {
-    body.setPosition(0, body.getPosition().y - 0.2);
+    body.setPosition( 0, (float)(body.getPosition().y - 0.2) );
 
 }
 
 void Water::lower()
 {
-    body.setPosition(0, body.getPosition().y + 0.2);
+    body.setPosition( 0, (float)(body.getPosition().y + 0.2) );
 
 }
 

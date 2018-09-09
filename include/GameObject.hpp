@@ -12,9 +12,8 @@
 class IGameObject
 {
 public:
-    virtual ~IGameObject(){};
+    virtual ~IGameObject() = default;
     virtual void update() = 0;
-    virtual void setPosition(float x, float y) = 0;
     virtual sf::Vector2f getPosition() = 0;
     virtual void lower() = 0;
     virtual sf::Sprite getBody() = 0;
@@ -32,11 +31,9 @@ public:
                float friction = FRICTION,
                sf::Rect<int> textureRect = sf::Rect<int>());
 
-    GameObject(){};
-
+    GameObject() = default;
     ~GameObject() override;
 
-    void setPosition(float x, float y) override;
     sf::Vector2f getPosition() override;
     void lower() override;
     void update() override;

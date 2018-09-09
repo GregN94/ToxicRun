@@ -16,14 +16,15 @@ public:
     Game(sf::VideoMode videoMode, sf::RenderWindow &window);
 
     void setUp(sf::VideoMode videoMode);
-    void run();
+    bool run();
     void draw();
 
 
 private:
     void controlPlayer();
     void cameraFollowPlayer();
-    sf::Text gameOverText(sf::RenderWindow &window);
+    void gameOverText();
+    void mouseInput();
 
     sf::RenderWindow &window;
     ltbl::LightSystem lightSystem;
@@ -36,6 +37,7 @@ private:
     sf::Font font;
     Stats stats;
     Water water;
+    bool exit = false;
 };
 
 

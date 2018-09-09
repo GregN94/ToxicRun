@@ -6,8 +6,6 @@
 #define SCREEN_HEIGHT   1080
 #define BITS_PER_PIXEL  32
 
-void closeWindow(sf::RenderWindow& window);
-
 int main()
 {
     sf::VideoMode videoMode(SCREEN_WIDTH, SCREEN_HEIGHT, BITS_PER_PIXEL);
@@ -18,19 +16,10 @@ int main()
 
     while (window.isOpen())
     {
-        closeWindow(window);
         window.clear(sf::Color::White);
-        game.run();
+        if (game.run())
+            window.close();
     }
     return 0;
 }
 
-void closeWindow(sf::RenderWindow& window)
-{
-    sf::Event event;
-    while (window.pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed)
-            window.close();
-    }
-}

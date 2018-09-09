@@ -6,7 +6,7 @@
 class Water
 {
 public:
-    Water(sf::VideoMode videoMode);
+    explicit Water(sf::VideoMode videoMode);
     void draw(sf::RenderWindow& window);
     void update();
     void lower();

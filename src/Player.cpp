@@ -109,8 +109,8 @@ void Player::jump()
 
 void Player::applyAirResistance()
 {
-    float airDampingX = -physicalBody->GetLinearVelocity().x * abs(physicalBody->GetLinearVelocity().x) * AIR_RESISTANCE_X;
-    float airDampingY = -physicalBody->GetLinearVelocity().y * abs(physicalBody->GetLinearVelocity().y) * AIR_RESISTANCE_Y;
+    auto airDampingX = (float)(-physicalBody->GetLinearVelocity().x * abs(physicalBody->GetLinearVelocity().x) * AIR_RESISTANCE_X);
+    auto airDampingY = (float)(-physicalBody->GetLinearVelocity().y * abs(physicalBody->GetLinearVelocity().y) * AIR_RESISTANCE_Y);
     physicalBody->ApplyForce(b2Vec2(airDampingX, airDampingY), physicalBody->GetWorldCenter(), true);
 }
 

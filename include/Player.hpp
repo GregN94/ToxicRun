@@ -56,7 +56,7 @@ private:
     bool isMovingUp();
     bool isMovingDown();
 
-    int imageIndex = 8;
+    unsigned imageIndex = 8;
     sf::Clock animationClock;
     sf::Clock damageClock;
     ltbl::LightSystem& lightSystem;

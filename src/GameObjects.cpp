@@ -12,7 +12,7 @@ GameObjects::GameObjects()
 
 void GameObjects::update()
 {
-    for (const auto object : objectList) {
+    for (const auto &object : objectList) {
         object->update();
     }
     for (auto it = objectList.begin(); it != objectList.end(); it++)
@@ -28,14 +28,14 @@ void GameObjects::update()
 void GameObjects::lower()
 {
     distance += 0.035;
-    for (const auto object : objectList) {
+    for (const auto &object : objectList) {
         object->lower();
     }
 }
 
 void GameObjects::draw(sf::RenderWindow& window)
 {
-    for (const auto object : objectList) {
+    for (const auto &object : objectList) {
         window.draw(object->getBody());
     }
 }

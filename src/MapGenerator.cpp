@@ -1,6 +1,3 @@
-
-#include <MapGenerator.hpp>
-//#include <iostream>
 #include <random>
 #include "MapGenerator.hpp"
 
@@ -40,8 +37,6 @@ MapGenerator::MapGenerator(GameObjects &gameObjects, sf::VideoMode videoMode, lt
     mapParts.push_back( { (float) videoMode.width / 2, 0 } );
     mapParts.push_back( { 0, (float) videoMode.height / 2 } );
     mapParts.push_back( { (float) videoMode.width / 2, (float) videoMode.height / 2 } );
-
-
 }
 
 void MapGenerator::generateMap()
@@ -56,8 +51,8 @@ void MapGenerator::createMapFragment(Position mapFragment)
 {
     std::random_device rd; // obtain a random number from hardware
     std::mt19937 eng(rd()); // seed the generator
-    std::uniform_int_distribution<> distr(0, mapFragments.size() - 1); // define the range
-    int index = distr(eng);
+    std::uniform_int_distribution<> range(0, (int)mapFragments.size() - 1); // define the range
+    auto index = (unsigned)range(eng);
     for (const auto platformPosition : mapFragments.at(index))
     {
         float positionX = platformPosition.x + mapFragment.x;
@@ -73,7 +68,6 @@ void MapGenerator::createMapFragment(Position mapFragment)
             gameObjects.createPlatform(world, lightSystem, positionX, positionY);
         }
     }
-
 }
 
 void MapGenerator::update()
@@ -84,5 +78,4 @@ void MapGenerator::update()
         createMapFragment(mapParts.at(0));
         createMapFragment(mapParts.at(1));
     }
-
 }

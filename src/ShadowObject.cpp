@@ -23,20 +23,20 @@ ShadowObject::ShadowObject(b2World &world,
     convexHull = new ltbl::ConvexHull();
     ltbl::ConvexHullVertex newVertex;
 
-    newVertex.position.x = static_cast<float>(-graphicBody.getTextureRect().width * scale / 2);
-    newVertex.position.y = static_cast<float>(graphicBody.getTextureRect().height * scale / 2);
+    newVertex.position.x = -graphicBody.getTextureRect().width * scale / 2;
+    newVertex.position.y = graphicBody.getTextureRect().height * scale / 2;
     convexHull->vertices.push_back(newVertex);
 
-    newVertex.position.x = static_cast<float>(-graphicBody.getTextureRect().width * scale / 2);
-    newVertex.position.y = static_cast<float>(-graphicBody.getTextureRect().height* scale  / 2);
+    newVertex.position.x = -graphicBody.getTextureRect().width * scale / 2;
+    newVertex.position.y = -graphicBody.getTextureRect().height* scale  / 2;
     convexHull->vertices.push_back(newVertex);
 
-    newVertex.position.x = static_cast<float>(graphicBody.getTextureRect().width * scale / 2);
-    newVertex.position.y = static_cast<float>(-graphicBody.getTextureRect().height * scale / 2);
+    newVertex.position.x = graphicBody.getTextureRect().width * scale / 2;
+    newVertex.position.y = -graphicBody.getTextureRect().height * scale / 2;
     convexHull->vertices.push_back(newVertex);
 
-    newVertex.position.x = static_cast<float>(graphicBody.getTextureRect().width * scale / 2);
-    newVertex.position.y = static_cast<float>(graphicBody.getTextureRect().height * scale / 2);
+    newVertex.position.x = graphicBody.getTextureRect().width * scale / 2;
+    newVertex.position.y = graphicBody.getTextureRect().height * scale / 2;
     convexHull->vertices.push_back(newVertex);
 
     convexHull->centerHull();

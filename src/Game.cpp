@@ -36,7 +36,7 @@ void Game::setUp(sf::VideoMode videoMode)
     water = Water(videoMode);
 }
 
-void Game::run()
+bool Game::run()
 {
     controlPlayer();
     cameraFollowPlayer();
@@ -57,20 +57,34 @@ void Game::run()
 
     draw();
     world.Step(1 / 60.f, 8, 3);
+    return exit;
 }
 
-sf::Text Game::gameOverText(sf::RenderWindow& window)
+void Game::gameOverText()
 {
     sf::Text gameOverText;
     gameOverText.setFont(font); // font is a sf::Font
     gameOverText.setCharacterSize(100); // in pixels, not points!
 
-    gameOverText.setFillColor(sf::Color::Green);
-    gameOverText.setPosition(window.getSize().x / 2, window.getSize().y / 2);
+    gameOverText.setFillColor(sf::Color::Red);
+    gameOverText.setPosition( (float)window.getSize().x / 2,
+                              (float)window.getSize().y / 2 );
     gameOverText.setStyle(sf::Text::Bold);
     gameOverText.setString("GAME OVER");
     gameOverText.setOrigin(gameOverText.getGlobalBounds().width / 2 , gameOverText.getGlobalBounds().height / 2);
-    return gameOverText;
+    window.draw(gameOverText);
+
+    sf::Text exitText;
+    exitText.setFont(font); // font is a sf::Font
+    exitText.setCharacterSize(64); // in pixels, not points!
+
+    exitText.setFillColor(sf::Color::Yellow);
+    exitText.setPosition( (float)window.getSize().x / 2,
+                          (float)window.getSize().y / 2 + 100 );
+    exitText.setStyle(sf::Text::Bold);
+    exitText.setString("EXIT");
+    exitText.setOrigin(exitText.getGlobalBounds().width / 2 , exitText.getGlobalBounds().height / 2);
+    window.draw(exitText);
 }
 
 void Game::controlPlayer()
@@ -91,7 +105,7 @@ void Game::controlPlayer()
 
 void Game::cameraFollowPlayer()
 {
-    if (player->graphicBody.getPosition().y < window.getSize().y / 2)
+    if (player->graphicBody.getPosition().y < (float)window.getSize().y / 2)
     {
         gameObjects.lower();
         water.lower();
@@ -110,9 +124,21 @@ void Game::draw()
 
     if (player->getHp() <= 0)
     {
-        window.draw(gameOverText(window));
+        gameOverText();
+        mouseInput();
     }
     window.display();
+}
+
+void Game::mouseInput()
+{
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        sf::Vector2i position = sf::Mouse::getPosition();
+        if (position.x > 860 and position.x < 1060 and position.y > 635 and position.y < 685)
+            exit = true;
+    }
+
 }
 
 

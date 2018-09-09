@@ -22,7 +22,7 @@ Stats::Stats(sf::RenderWindow& window, sf::Font& font)
     pointsText.setFont(font);
     pointsText.setCharacterSize(32); // in pixels, not points!
     pointsText.setFillColor(sf::Color::Yellow);
-    pointsText.setPosition(window.getSize().x / 2, 50);
+    pointsText.setPosition( (float)window.getSize().x / 2, 50 );
     pointsText.setStyle(sf::Text::Bold);
 }
 
@@ -43,10 +43,3 @@ void Stats::draw()
     pointsText.setOrigin(pointsText.getGlobalBounds().width / 2, 20);
     window.draw(pointsText);
 }
-
-void Stats::clear()
-{
-    playerHP = 100;
-    distance = 0;
-}
-
