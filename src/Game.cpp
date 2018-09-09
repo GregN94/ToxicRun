@@ -1,6 +1,3 @@
-
-#include <Game.hpp>
-
 #include "Game.hpp"
 
 #define GRAVITY         9.8

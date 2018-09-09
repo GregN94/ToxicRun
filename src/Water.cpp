@@ -1,6 +1,3 @@
-
-#include <Water.hpp>
-
 #include "Water.hpp"
 
 Water::Water(sf::VideoMode videoMode)

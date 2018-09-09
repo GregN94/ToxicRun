@@ -1,21 +1,18 @@
 #include "Player.hpp"
-#include <iostream>
-#include <Player.hpp>
-
 
 #define STAND_IMG   8
 #define RISE_IMG    3
 #define FALL_IMG    2
 
 std::vector<sf::IntRect> images = {sf::IntRect(0,    0,   480,  440),
-                                     sf::IntRect(480,  0,   480,  440),
-                                     sf::IntRect(960,  0,   480, 440),
-                                     sf::IntRect(1440, 0,   480, 440),
-                                     sf::IntRect(0,    440, 480,  440),
-                                     sf::IntRect(480,  440, 480,  440),
-                                     sf::IntRect(960,  440, 480, 440),
-                                     sf::IntRect(1440, 440, 480, 440),
-                                     sf::IntRect(1920, 0,   480, 440)};
+                                   sf::IntRect(480,  0,   480,  440),
+                                   sf::IntRect(960,  0,   480, 440),
+                                   sf::IntRect(1440, 0,   480, 440),
+                                   sf::IntRect(0,    440, 480,  440),
+                                   sf::IntRect(480,  440, 480,  440),
+                                   sf::IntRect(960,  440, 480, 440),
+                                   sf::IntRect(1440, 440, 480, 440),
+                                   sf::IntRect(1920, 0,   480, 440)};
 
 
 Player::Player(b2World& world,

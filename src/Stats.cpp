@@ -1,6 +1,3 @@
-
-#include <Stats.hpp>
-
 #include "Stats.hpp"
 
 Stats::Stats(sf::RenderWindow& window, sf::Font& font)

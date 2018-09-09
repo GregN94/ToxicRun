@@ -1,6 +1,3 @@
-
-#include <GameObject.hpp>
-
 #include "GameObject.hpp"
 
 GameObject::GameObject(b2World& world,

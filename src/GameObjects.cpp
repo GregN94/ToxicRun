@@ -1,6 +1,3 @@
-
-#include <GameObjects.hpp>
-
 #include "GameObjects.hpp"
 #include "ShadowObject.hpp"
 

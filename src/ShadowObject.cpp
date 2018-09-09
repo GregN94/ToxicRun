@@ -1,9 +1,5 @@
 #include "ShadowObject.hpp"
 
-#include <iostream>
-#include <ShadowObject.hpp>
-
-
 ShadowObject::ShadowObject(b2World &world,
                            float positionX,
                            float positionY,
