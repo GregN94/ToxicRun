@@ -7,16 +7,16 @@
 #define MAX_HEIGHT 250
 
 std::vector<Position> fragment_01 = { {200, 0},
-//                                      {400, 150},
-                                      {800, 200},
+                                      {700, 200},
                                       {600, 100 + MAX_HEIGHT} };
 
-std::vector<Position> fragment_02 = { {900, 0},
+std::vector<Position> fragment_02 = { {780, 0},
                                       {400, 200},
-                                      {600, 100 + MAX_HEIGHT} };
+                                      {650, 100 + MAX_HEIGHT} };
 
-std::vector<Position> fragment_03 = { {400, 200},
-                                      {900, 400} };
+std::vector<Position> fragment_03 = { {200, 0},
+                                      {400, 200},
+                                      {730, 400} };
 
 std::vector<std::vector<Position>> mapFragments = { fragment_01,
                                                     fragment_02,
