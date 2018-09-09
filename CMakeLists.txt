@@ -19,7 +19,8 @@ set(SOURCES
         ${SRC}/ShadowObject.cpp
         ${SRC}/MapGenerator.cpp
         ${SRC}/Water.cpp
-        ${SRC}/Stats.cpp)
+        ${SRC}/Stats.cpp
+        ${SRC}/Game.cpp)
 
 find_package(SFML REQUIRED COMPONENTS System Window Graphics)
 find_package(Box2D REQUIRED)

@@ -9,7 +9,7 @@
 class GameObjects
 {
 public:
-    GameObjects() {objectList.reserve(40);}
+    GameObjects();
     void update();
     void lower();
     void draw(sf::RenderWindow&);
@@ -20,7 +20,6 @@ public:
     void createGround(b2World& world, sf::VideoMode videoMode);
     std::shared_ptr<ShadowObject> createPlatform(b2World &world, ltbl::LightSystem &lightSystem, float positionX, float positionY);
     std::shared_ptr<Player> createPlayer(b2World& world, sf::VideoMode videoMode, ltbl::LightSystem& lightSystem);
-
 
     float distance = 0;
 

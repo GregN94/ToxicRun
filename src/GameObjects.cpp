@@ -1,5 +1,14 @@
+
+#include <GameObjects.hpp>
+
 #include "GameObjects.hpp"
 #include "ShadowObject.hpp"
+
+GameObjects::GameObjects()
+{
+    objectList.reserve(60);
+    loadTextures();
+}
 
 void GameObjects::update()
 {

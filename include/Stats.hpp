@@ -6,9 +6,10 @@
 class Stats
 {
 public:
-    explicit Stats(sf::RenderWindow& window);
+    Stats(sf::RenderWindow& window, sf::Font& font);
     void update(int playerHP, int distance);
     void draw();
+    void clear();
 
 private:
     sf::Texture heartTexture;

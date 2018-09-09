@@ -1,6 +1,9 @@
+
+#include <Stats.hpp>
+
 #include "Stats.hpp"
 
-Stats::Stats(sf::RenderWindow& window)
+Stats::Stats(sf::RenderWindow& window, sf::Font& font)
     :  window(window)
 {
     heartTexture.loadFromFile("../res/heart.png");
@@ -9,8 +12,6 @@ Stats::Stats(sf::RenderWindow& window)
     heart.setPosition(60, 50);
     heart.setTexture(heartTexture);
     heart.setScale(0.4, 0.4);
-
-    font.loadFromFile("../res/Arial.ttf");
 
     text.setFont(font); // font is a sf::Font
     text.setCharacterSize(32); // in pixels, not points!
@@ -41,5 +42,11 @@ void Stats::draw()
     pointsText.setString("Score: " + std::to_string(this->distance));
     pointsText.setOrigin(pointsText.getGlobalBounds().width / 2, 20);
     window.draw(pointsText);
+}
+
+void Stats::clear()
+{
+    playerHP = 100;
+    distance = 0;
 }
 
